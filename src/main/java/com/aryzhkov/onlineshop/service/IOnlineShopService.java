@@ -1,12 +1,11 @@
-package com.aryzhkov.onlineshop.dao;
+package com.aryzhkov.onlineshop.service;
 
 import com.aryzhkov.onlineshop.entity.Product;
 import com.aryzhkov.onlineshop.entity.User;
 
 import java.util.List;
 
-public interface IOnlineShopDao {
-
+public interface IOnlineShopService {
     public User getUser(String userName);
 
     public List<Product> getAllProduct();
