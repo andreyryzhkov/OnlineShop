@@ -1,29 +1,54 @@
 package com.aryzhkov.onlineshop.web.servlet.servlet;
 
 import com.aryzhkov.onlineshop.entity.Product;
+import com.aryzhkov.onlineshop.entity.User;
 import com.aryzhkov.onlineshop.service.OnlineShopService;
 import com.aryzhkov.onlineshop.web.servlet.templater.PageGenerator;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 public class AddProductServlet extends HttpServlet {
 
     private OnlineShopService onlineShopService;
+    private List<String> users;
 
-    public AddProductServlet(OnlineShopService onlineShopService) {
+    public AddProductServlet(OnlineShopService onlineShopService, List<String> users) {
         this.onlineShopService = onlineShopService;
+        this.users = users;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        PageGenerator pageGenerator = PageGenerator.instance();
-
-        String page = pageGenerator.getPage("addproduct.html", new HashMap<>());
-        response.getWriter().write(page);
+        Cookie[] cookies = request.getCookies();
+        String login = null;
+        boolean isAuth = false;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                login = cookie.getValue();
+                if (cookie.getName().equals("user") && (users.contains(login))) {
+                    isAuth = true;
+                }
+            }
+        }
+        if (!isAuth) {
+            response.sendRedirect("/login");
+        } else {
+            User user = onlineShopService.getUser(login);
+            if ("ADMIN".equals(user.getUserType())) {
+                PageGenerator pageGenerator = PageGenerator.instance();
+                String page = pageGenerator.getPage("addproduct.html", new HashMap<>());
+                response.getWriter().write(page);
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, "Access denied");
+            }
+        }
     }
 
     @Override

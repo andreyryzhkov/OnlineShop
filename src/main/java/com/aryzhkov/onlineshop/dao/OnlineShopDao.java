@@ -12,7 +12,7 @@ public class OnlineShopDao implements IOnlineShopDao {
 
     @Override
     public User getUser(String userName) {
-        String selectSQL = "SELECT \"USERNAME\" as username, \"PASSWORD\", \"USERTYPE\" as usertype as pass FROM PUBLIC. \"USERS\"  WHERE \"USERNAME\" = " + "'" + userName + "'";
+        String selectSQL = "SELECT \"USERNAME\" as username, \"PASSWORD\" as pass, \"USERTYPE\" as usertype FROM PUBLIC. \"USERS\"  WHERE \"USERNAME\" = " + "'" + userName + "'";
 
         try (Connection connection = JDBCConnection.getConnection();
              Statement statement = connection.createStatement();
@@ -27,7 +27,7 @@ public class OnlineShopDao implements IOnlineShopDao {
 
             return user;
         } catch (SQLException e) {
-            throw new RuntimeException("Getting user are failed", e);
+            throw new RuntimeException(e);
         }
     }
 

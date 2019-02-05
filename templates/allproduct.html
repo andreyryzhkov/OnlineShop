@@ -11,6 +11,9 @@
     <title>OnlineShop</title>
 </head>
 <body>
+<a href="/login">Login</a>
+<a href="/logout">Logout</a>
+<a href="/product/add">Add new product</a>
 <h1>Products</h1>
 
 <table class="table table-striped">
@@ -27,6 +30,16 @@
         <td>${product.id}</td>
         <td>${product.name}</td>
         <td>${product.price}</td>
+        <td>
+            <form action="/product/edit" method="GET">
+                <input type="button" value="Edit" onclick="window.location.href='/product/edit?id=${product.id}'" />
+            </form>
+        </td>
+        <td>
+            <form action="/product/delete" method="GET">
+                <input type="button" value="Delete" onclick="window.location.href='/product/delete?id=${product.id}'" />
+            </form>
+        </td>
     </tr>
     </#list>
     </tbody>
