@@ -10,6 +10,10 @@ public class OnlineShopService implements IOnlineShopService {
 
     private OnlineShopDao onlineShopDao;
 
+    public OnlineShopService(OnlineShopDao onlineShopDao) {
+        this.onlineShopDao = onlineShopDao;
+    }
+
     @Override
     public User getUser(String userName) {
         return onlineShopDao.getUser(userName);

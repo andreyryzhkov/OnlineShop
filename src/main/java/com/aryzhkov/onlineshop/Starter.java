@@ -1,24 +1,36 @@
 package com.aryzhkov.onlineshop;
 
 import com.aryzhkov.onlineshop.dao.OnlineShopDao;
-import com.aryzhkov.onlineshop.entity.Product;
-import com.aryzhkov.onlineshop.entity.User;
-
-import java.util.List;
+import com.aryzhkov.onlineshop.service.OnlineShopService;
+import com.aryzhkov.onlineshop.web.servlet.servlet.AddProductServlet;
+import com.aryzhkov.onlineshop.web.servlet.servlet.DelProductServlet;
+import com.aryzhkov.onlineshop.web.servlet.servlet.EditProductServlet;
+import com.aryzhkov.onlineshop.web.servlet.servlet.GetProductServlet;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 public class Starter {
 
     public static void main(String[] args) throws Exception {
+
         OnlineShopDao onlineShopDao = new OnlineShopDao();
-        //  User user = onlineShopDao.getUser("ADMIN");
-        // Product product = new Product(2,"Bike2", 1500);
-        // onlineShopDao.updateProduct(product);
+        OnlineShopService onlineShopService = new OnlineShopService(onlineShopDao);
 
-        List<Product> products = onlineShopDao.getAllProduct();
+        GetProductServlet getProductServlet = new GetProductServlet(onlineShopService);
+        AddProductServlet addProductServlet = new AddProductServlet(onlineShopService);
+        EditProductServlet editProductServlet = new EditProductServlet(onlineShopService);
+        DelProductServlet delProductServlet = new DelProductServlet(onlineShopService);
 
-        // Product product = onlineShopDao.getProductById(2);
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.addServlet(new ServletHolder(getProductServlet), "/products");
+        context.addServlet(new ServletHolder(addProductServlet), "/product/add");
+        context.addServlet(new ServletHolder(editProductServlet), "/product/edit");
+        context.addServlet(new ServletHolder(delProductServlet), "/product/delete");
 
-        //  onlineShopDao.insertProduct(product);
-        //  onlineShopDao.deleteProduct(1);
+        Server server = new Server(8080);
+        server.setHandler(context);
+
+        server.start();
     }
 }
