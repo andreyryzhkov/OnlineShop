@@ -1,7 +1,7 @@
 package com.aryzhkov.onlineshop.dao;
 
 import com.aryzhkov.onlineshop.dao.connection.JDBCConnection;
-import com.aryzhkov.onlineshop.dao.mapper.UserRowMapper;
+import com.aryzhkov.onlineshop.dao.mapper.RowMapper;
 import com.aryzhkov.onlineshop.entity.Product;
 import com.aryzhkov.onlineshop.entity.User;
 
@@ -16,10 +16,10 @@ public class OnlineShopDao implements IOnlineShopDao {
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectSQL)) {
 
-            UserRowMapper userRowMapper = new UserRowMapper();
+            RowMapper rowMapper = new RowMapper();
             User user = new User();
             while (resultSet.next()) {
-                user = userRowMapper.mapRowUser(resultSet);
+                user = rowMapper.mapRowUser(resultSet);
             }
 
             return user;
@@ -50,9 +50,9 @@ public class OnlineShopDao implements IOnlineShopDao {
              ResultSet resultSet = statement.executeQuery(selectSQL)) {
 
             List<Product> products = new ArrayList<>();
-            UserRowMapper userRowMapper = new UserRowMapper();
+            RowMapper rowMapper = new RowMapper();
             while (resultSet.next()) {
-                Product product = userRowMapper.mapRowProduct(resultSet);
+                Product product = rowMapper.mapRowProduct(resultSet);
                 products.add(product);
             }
             return products;
@@ -70,10 +70,10 @@ public class OnlineShopDao implements IOnlineShopDao {
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectSQL)) {
 
-            UserRowMapper userRowMapper = new UserRowMapper();
+            RowMapper rowMapper = new RowMapper();
             Product product = new Product();
             while (resultSet.next()) {
-                product = userRowMapper.mapRowProduct(resultSet);
+                product = rowMapper.mapRowProduct(resultSet);
             }
             return product;
 

@@ -6,10 +6,9 @@ import com.aryzhkov.onlineshop.entity.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserRowMapper {
+public class RowMapper {
 
     public User mapRowUser(ResultSet resultSet) throws SQLException {
-
         User user = new User();
         user.setUserName(resultSet.getString("username"));
         user.setPassword(resultSet.getString("pass"));
