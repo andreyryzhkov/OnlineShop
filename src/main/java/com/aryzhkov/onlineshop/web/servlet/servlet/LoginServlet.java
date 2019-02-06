@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class LoginServlet extends HttpServlet {
 
@@ -40,7 +39,7 @@ public class LoginServlet extends HttpServlet {
 
         User user = onlineShopService.getUserByName(login);
         String token = String.valueOf(user.getId());
-        Cookie cookie = new Cookie("user", token);
+        Cookie cookie = new Cookie("UID", token);
         resp.addCookie(cookie);
         users.add(token);
 

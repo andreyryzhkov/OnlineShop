@@ -24,11 +24,11 @@ public class DelProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Cookie[] cookies = req.getCookies();
         String token = Authentication.getLoginAuthentication(cookies, users);
-        boolean isAuthorization = Authentication.isAuthorization(onlineShopService, token);
 
         if (token == null) {
             resp.sendRedirect("/login");
         } else {
+            boolean isAuthorization = Authentication.isAuthorization(onlineShopService, token);
             if (isAuthorization) {
                 int id = Integer.parseInt(req.getParameter("id"));
                 onlineShopService.deleteProduct(id);

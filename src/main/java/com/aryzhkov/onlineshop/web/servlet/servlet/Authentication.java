@@ -14,7 +14,7 @@ public class Authentication {
         String token = null;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("user") && (users.contains(cookie.getValue()))) {
+                if (cookie.getName().equals("UID") && (users.contains(cookie.getValue()))) {
                     token = cookie.getValue();
                 }
             }
@@ -30,5 +30,4 @@ public class Authentication {
         }
         return isAuthorization;
     }
-
 }

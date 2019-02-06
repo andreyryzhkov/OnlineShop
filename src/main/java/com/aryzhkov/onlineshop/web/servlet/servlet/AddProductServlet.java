@@ -27,11 +27,11 @@ public class AddProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Cookie[] cookies = request.getCookies();
         String token = Authentication.getLoginAuthentication(cookies, users);
-        boolean isAuthorization = Authentication.isAuthorization(onlineShopService, token);
 
         if (token == null) {
             response.sendRedirect("/login");
         } else {
+            boolean isAuthorization = Authentication.isAuthorization(onlineShopService, token);
             if (isAuthorization) {
                 PageGenerator pageGenerator = PageGenerator.instance();
                 String page = pageGenerator.getPage("addproduct.html", new HashMap<>());
