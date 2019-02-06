@@ -4,32 +4,49 @@ import com.aryzhkov.onlineshop.entity.Product;
 import com.aryzhkov.onlineshop.service.OnlineShopService;
 import com.aryzhkov.onlineshop.web.servlet.templater.PageGenerator;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EditProductServlet extends HttpServlet {
 
     private OnlineShopService onlineShopService;
+    private List<String> users;
 
-    public EditProductServlet(OnlineShopService onlineShopService) {
+    public EditProductServlet(OnlineShopService onlineShopService, List<String> users) {
         this.onlineShopService = onlineShopService;
+        this.users = users;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Map<String, Object> pageVariables = new HashMap<>();
-        int id = Integer.parseInt(request.getParameter("id"));
-        Product product = onlineShopService.getProductById(id);
+        Cookie[] cookies = request.getCookies();
+        String login = Authentication.isAuthentication(cookies, users);
+        boolean isAuthorization = Authentication.isAuthorization(onlineShopService, login);
 
-        pageVariables.put("product", product);
+        if (login == null) {
+            response.sendRedirect("/login");
+        } else {
+            if (isAuthorization) {
+                Map<String, Object> pageVariables = new HashMap<>();
+                int id = Integer.parseInt(request.getParameter("id"));
+                Product product = onlineShopService.getProductById(id);
 
-        PageGenerator pageGenerator = PageGenerator.instance();
-        String page = pageGenerator.getPage("editproduct.html", pageVariables);
-        response.getWriter().write(page);
+                pageVariables.put("product", product);
+
+                PageGenerator pageGenerator = PageGenerator.instance();
+                String page = pageGenerator.getPage("editproduct.html", pageVariables);
+                response.getWriter().write(page);
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, "Access denied");
+            }
+        }
     }
 
     @Override

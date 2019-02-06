@@ -26,21 +26,13 @@ public class AddProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Cookie[] cookies = request.getCookies();
-        String login = null;
-        boolean isAuth = false;
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                login = cookie.getValue();
-                if (cookie.getName().equals("user") && (users.contains(login))) {
-                    isAuth = true;
-                }
-            }
-        }
-        if (!isAuth) {
+        String login = Authentication.isAuthentication(cookies, users);
+        boolean isAuthorization = Authentication.isAuthorization(onlineShopService, login);
+
+        if (login == null) {
             response.sendRedirect("/login");
         } else {
-            User user = onlineShopService.getUser(login);
-            if ("ADMIN".equals(user.getUserType())) {
+            if (isAuthorization) {
                 PageGenerator pageGenerator = PageGenerator.instance();
                 String page = pageGenerator.getPage("addproduct.html", new HashMap<>());
                 response.getWriter().write(page);
