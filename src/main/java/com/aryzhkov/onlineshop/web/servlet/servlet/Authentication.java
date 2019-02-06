@@ -7,24 +7,25 @@ import javax.servlet.http.Cookie;
 import java.util.List;
 
 public class Authentication {
+    private static final String USER_TYPE_ADMIN = "ADMIN";
+    private static final String USER_TYPE_GUEST = "GUEST";
 
-    public static String isAuthentication(Cookie[] cookies, List<String> users) {
-        String login = null;
+    public static String getLoginAuthentication(Cookie[] cookies, List<String> users) {
+        String token = null;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                login = cookie.getValue();
-                if (cookie.getName().equals("user") && (users.contains(login))) {
-                    return login;
+                if (cookie.getName().equals("user") && (users.contains(cookie.getValue()))) {
+                    token = cookie.getValue();
                 }
             }
         }
-        return login;
+        return token;
     }
 
-    public static boolean isAuthorization(OnlineShopService onlineShopService, String login) {
+    public static boolean isAuthorization(OnlineShopService onlineShopService, String token) {
         boolean isAuthorization = false;
-        User user = onlineShopService.getUser(login);
-        if ("ADMIN".equals(user.getUserType())) {
+        User user = onlineShopService.getUserById(token);
+        if (USER_TYPE_ADMIN.equals(user.getUserType())) {
             isAuthorization = true;
         }
         return isAuthorization;

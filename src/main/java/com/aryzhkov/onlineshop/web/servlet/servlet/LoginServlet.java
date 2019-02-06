@@ -4,7 +4,6 @@ import com.aryzhkov.onlineshop.entity.User;
 import com.aryzhkov.onlineshop.service.OnlineShopService;
 import com.aryzhkov.onlineshop.web.servlet.templater.PageGenerator;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,11 +36,13 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String login = req.getParameter("login");
-        String password = req.getParameter("password");
+        //  String password =  req.getParameter("password"); TODO: need to check (Hash)
 
-        Cookie cookie = new Cookie("user", login);
+        User user = onlineShopService.getUserByName(login);
+        String token = String.valueOf(user.getId());
+        Cookie cookie = new Cookie("user", token);
         resp.addCookie(cookie);
-        users.add(login);
+        users.add(token);
 
         resp.sendRedirect("/products");
     }

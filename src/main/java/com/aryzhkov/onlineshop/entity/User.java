@@ -1,17 +1,27 @@
 package com.aryzhkov.onlineshop.entity;
 
 public class User {
+    private int id;
     private String userName;
     private String password;
     private String userType;
 
-    public User(String userName, String password, String userType) {
+    public User(int id, String userName, String password, String userType) {
+        this.id = id;
         this.userName = userName;
         this.password = password;
         this.userType = userType;
     }
 
     public User() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUserName() {

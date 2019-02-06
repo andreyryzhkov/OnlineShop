@@ -15,8 +15,13 @@ public class OnlineShopService implements IOnlineShopService {
     }
 
     @Override
-    public User getUser(String userName) {
-        return onlineShopDao.getUser(userName);
+    public User getUserByName(String userName) {
+        return onlineShopDao.getUserByName(userName);
+    }
+
+    @Override
+    public User getUserById(String token) {
+        return onlineShopDao.getUserById(Integer.parseInt(token));
     }
 
     @Override

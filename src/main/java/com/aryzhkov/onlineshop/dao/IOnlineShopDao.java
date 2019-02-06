@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface IOnlineShopDao {
 
-    public User getUser(String userName);
+    public User getUserByName(String userName);
+
+    public User getUserById(int id);
 
     public List<Product> getAllProduct();
 

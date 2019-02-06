@@ -26,10 +26,10 @@ public class EditProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Cookie[] cookies = request.getCookies();
-        String login = Authentication.isAuthentication(cookies, users);
-        boolean isAuthorization = Authentication.isAuthorization(onlineShopService, login);
+        String token = Authentication.getLoginAuthentication(cookies, users);
+        boolean isAuthorization = Authentication.isAuthorization(onlineShopService, token);
 
-        if (login == null) {
+        if (token == null) {
             response.sendRedirect("/login");
         } else {
             if (isAuthorization) {

@@ -1,6 +1,7 @@
 package com.aryzhkov.onlineshop.dao;
 
 import com.aryzhkov.onlineshop.dao.connection.JDBCConnection;
+import com.aryzhkov.onlineshop.dao.mapper.UserRowMapper;
 import com.aryzhkov.onlineshop.entity.Product;
 import com.aryzhkov.onlineshop.entity.User;
 
@@ -10,25 +11,31 @@ import java.util.List;
 
 public class OnlineShopDao implements IOnlineShopDao {
 
-    @Override
-    public User getUser(String userName) {
-        String selectSQL = "SELECT \"USERNAME\" as username, \"PASSWORD\" as pass, \"USERTYPE\" as usertype FROM PUBLIC. \"USERS\"  WHERE \"USERNAME\" = " + "'" + userName + "'";
-
+    public User getUser(String selectSQL) {
         try (Connection connection = JDBCConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectSQL)) {
 
-            User user = new User();
-            while (resultSet.next()) {
-                user.setUserName(resultSet.getString("username"));
-                user.setPassword(resultSet.getString("pass"));
-                user.setUserType(resultSet.getString("usertype"));
-            }
+            UserRowMapper userRowMapper = new UserRowMapper();
+            User user = userRowMapper.mapRowUser(resultSet);
 
             return user;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public User getUserByName(String userName) {
+        String selectSQL = "SELECT \"USERNAME\" as username, \"PASSWORD\" as pass, \"USERTYPE\" as usertype, \"ID\" as id FROM public.\"USERS\"  WHERE \"USERNAME\" = " + "'" + userName + "'";
+        return getUser(selectSQL);
+    }
+
+    @Override
+    public User getUserById(int id) {
+        String selectSQL = "SELECT \"USERNAME\" as username, \"PASSWORD\" as pass, \"USERTYPE\" as usertype, \"ID\" as id FROM public.\"USERS\"  WHERE \"ID\" = " + id;
+
+        return getUser(selectSQL);
     }
 
     @Override

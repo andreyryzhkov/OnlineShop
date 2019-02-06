@@ -6,7 +6,9 @@ import com.aryzhkov.onlineshop.entity.User;
 import java.util.List;
 
 public interface IOnlineShopService {
-    public User getUser(String userName);
+    public User getUserByName(String userName);
+
+    public User getUserById(String token);
 
     public List<Product> getAllProduct();
 

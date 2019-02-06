@@ -20,8 +20,8 @@ public class Starter {
 
         GetProductServlet getProductServlet = new GetProductServlet(onlineShopService);
         AddProductServlet addProductServlet = new AddProductServlet(onlineShopService, users);
-        EditProductServlet editProductServlet = new EditProductServlet(onlineShopService);
-        DelProductServlet delProductServlet = new DelProductServlet(onlineShopService);
+        EditProductServlet editProductServlet = new EditProductServlet(onlineShopService, users);
+        DelProductServlet delProductServlet = new DelProductServlet(onlineShopService, users);
         LoginServlet loginServlet = new LoginServlet(onlineShopService, users);
         LogoutServlet logoutServlet = new LogoutServlet(users);
 
