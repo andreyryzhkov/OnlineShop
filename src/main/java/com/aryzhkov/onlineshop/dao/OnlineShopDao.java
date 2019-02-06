@@ -17,7 +17,10 @@ public class OnlineShopDao implements IOnlineShopDao {
              ResultSet resultSet = statement.executeQuery(selectSQL)) {
 
             UserRowMapper userRowMapper = new UserRowMapper();
-            User user = userRowMapper.mapRowUser(resultSet);
+            User user = new User();
+            while (resultSet.next()) {
+                user = userRowMapper.mapRowUser(resultSet);
+            }
 
             return user;
         } catch (SQLException e) {
@@ -47,11 +50,9 @@ public class OnlineShopDao implements IOnlineShopDao {
              ResultSet resultSet = statement.executeQuery(selectSQL)) {
 
             List<Product> products = new ArrayList<>();
+            UserRowMapper userRowMapper = new UserRowMapper();
             while (resultSet.next()) {
-                Product product = new Product();
-                product.setId(resultSet.getInt("id"));
-                product.setName(resultSet.getString("name"));
-                product.setPrice(resultSet.getDouble("price"));
+                Product product = userRowMapper.mapRowProduct(resultSet);
                 products.add(product);
             }
             return products;
@@ -69,11 +70,10 @@ public class OnlineShopDao implements IOnlineShopDao {
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectSQL)) {
 
+            UserRowMapper userRowMapper = new UserRowMapper();
             Product product = new Product();
             while (resultSet.next()) {
-                product.setId(resultSet.getInt("id"));
-                product.setName(resultSet.getString("name"));
-                product.setPrice(resultSet.getDouble("price"));
+                product = userRowMapper.mapRowProduct(resultSet);
             }
             return product;
 
