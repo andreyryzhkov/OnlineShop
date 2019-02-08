@@ -1,19 +1,33 @@
 package com.aryzhkov.onlineshop;
 
-import com.aryzhkov.onlineshop.dao.OnlineShopDao;
+import com.aryzhkov.onlineshop.dao.jdbc.connection.JdbcConnection;
 import com.aryzhkov.onlineshop.service.OnlineShopService;
 import com.aryzhkov.onlineshop.web.servlet.servlet.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class Starter {
+    private static final String PROPERTIES_PATH = "db.properties";
 
     public static void main(String[] args) throws Exception {
 
+        Properties properties = new Properties();
+
+        try (FileInputStream fileInputStream = new FileInputStream(PROPERTIES_PATH)) {
+            properties.load(fileInputStream);
+        }
+
+        JdbcConnection jdbcConnection = new JdbcConnection();
+        jdbcConnection.setProperties(properties);
+
+
+/**
         OnlineShopDao onlineShopDao = new OnlineShopDao();
         OnlineShopService onlineShopService = new OnlineShopService(onlineShopDao);
         List<String> users = new ArrayList<>();
@@ -37,5 +51,6 @@ public class Starter {
         server.setHandler(context);
 
         server.start();
+ */
     }
 }

@@ -22,11 +22,11 @@ public class GetProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Product> products = onlineShopService.getAllProduct();
+     //   List<Product> products = onlineShopService.getAllProduct();
         PageGenerator pageGenerator = PageGenerator.instance();
 
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("products", products);
+      //  pageVariables.put("products", products);
 
         String page = pageGenerator.getPage("allproduct.html", pageVariables);
         response.getWriter().write(page);

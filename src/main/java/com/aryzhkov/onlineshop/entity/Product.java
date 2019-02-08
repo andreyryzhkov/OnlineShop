@@ -1,12 +1,12 @@
 package com.aryzhkov.onlineshop.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Product {
     private int id;
     private String name;
     private double price;
-    private Date dateMaking;
+    private LocalDate dateMaking;
 
     public Product(){
 
@@ -35,7 +35,7 @@ public class Product {
         this.price = price;
     }
 
-    public void setDateMaking(Date dateMaking) {
+    public void setDateMaking(LocalDate dateMaking) {
         this.dateMaking = dateMaking;
     }
 
@@ -51,7 +51,17 @@ public class Product {
         return price;
     }
 
-    public Date getDateMaking() {
+    public LocalDate getDateMaking() {
         return dateMaking;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", dateMaking=" + dateMaking +
+                '}';
     }
 }

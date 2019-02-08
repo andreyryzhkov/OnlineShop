@@ -31,7 +31,7 @@ public class DelProductServlet extends HttpServlet {
             boolean isAuthorization = Authentication.isAuthorization(onlineShopService, token);
             if (isAuthorization) {
                 int id = Integer.parseInt(req.getParameter("id"));
-                onlineShopService.deleteProduct(id);
+             //   onlineShopService.deleteProduct(id);
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.sendRedirect("/products");
             } else {

@@ -1,12 +1,11 @@
-package com.aryzhkov.onlineshop.dao.mapper;
+package com.aryzhkov.onlineshop.dao.jdbc.mapper;
 
-import com.aryzhkov.onlineshop.entity.Product;
 import com.aryzhkov.onlineshop.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RowMapper {
+public class UserMapper {
 
     public User mapRowUser(ResultSet resultSet) throws SQLException {
         User user = new User();
@@ -16,14 +15,5 @@ public class RowMapper {
         user.setId(resultSet.getInt("id"));
 
         return user;
-    }
-
-    public Product mapRowProduct(ResultSet resultSet) throws SQLException {
-        Product product = new Product();
-        product.setId(resultSet.getInt("id"));
-        product.setName(resultSet.getString("name"));
-        product.setPrice(resultSet.getDouble("price"));
-
-        return product;
     }
 }

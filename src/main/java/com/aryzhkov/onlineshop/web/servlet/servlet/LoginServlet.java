@@ -37,11 +37,11 @@ public class LoginServlet extends HttpServlet {
         String login = req.getParameter("login");
         //  String password =  req.getParameter("password"); TODO: need to check (Hash)
 
-        User user = onlineShopService.getUserByName(login);
-        String token = String.valueOf(user.getId());
-        Cookie cookie = new Cookie("UID", token);
-        resp.addCookie(cookie);
-        users.add(token);
+      //  User user = onlineShopService.getUserByName(login);
+      //  String token = String.valueOf(user.getId());
+      //  Cookie cookie = new Cookie("UID", token);
+        //resp.addCookie(cookie);
+        //users.add(token);
 
         resp.sendRedirect("/products");
     }

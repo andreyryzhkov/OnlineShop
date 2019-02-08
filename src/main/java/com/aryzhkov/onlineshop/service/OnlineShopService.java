@@ -1,13 +1,12 @@
 package com.aryzhkov.onlineshop.service;
 
-import com.aryzhkov.onlineshop.dao.OnlineShopDao;
 import com.aryzhkov.onlineshop.entity.Product;
 import com.aryzhkov.onlineshop.entity.User;
 
 import java.util.List;
 
-public class OnlineShopService implements IOnlineShopService {
-
+public class OnlineShopService {
+/**
     private OnlineShopDao onlineShopDao;
 
     public OnlineShopService(OnlineShopDao onlineShopDao) {
@@ -48,4 +47,5 @@ public class OnlineShopService implements IOnlineShopService {
     public void updateProduct(Product product) {
         onlineShopDao.updateProduct(product);
     }
+    */
 }

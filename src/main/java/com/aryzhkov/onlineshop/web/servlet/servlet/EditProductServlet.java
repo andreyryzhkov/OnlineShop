@@ -35,9 +35,9 @@ public class EditProductServlet extends HttpServlet {
             if (isAuthorization) {
                 Map<String, Object> pageVariables = new HashMap<>();
                 int id = Integer.parseInt(request.getParameter("id"));
-                Product product = onlineShopService.getProductById(id);
+          //      Product product = onlineShopService.getProductById(id);
 
-                pageVariables.put("product", product);
+            //    pageVariables.put("product", product);
 
                 PageGenerator pageGenerator = PageGenerator.instance();
                 String page = pageGenerator.getPage("editproduct.html", pageVariables);
@@ -56,7 +56,7 @@ public class EditProductServlet extends HttpServlet {
         double price = Double.parseDouble(request.getParameter("price"));
 
         Product product = new Product(id, productName, price);
-        onlineShopService.updateProduct(product);
+     //   onlineShopService.updateProduct(product);
 
         response.sendRedirect("/products");
     }

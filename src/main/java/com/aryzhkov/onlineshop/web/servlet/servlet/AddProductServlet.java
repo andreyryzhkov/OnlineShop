@@ -49,7 +49,7 @@ public class AddProductServlet extends HttpServlet {
         double price = Double.parseDouble(request.getParameter("price"));
 
         Product product = new Product(name, price);
-        onlineShopService.insertProduct(product);
+     //   onlineShopService.insertProduct(product);
 
         response.sendRedirect("/products");
     }

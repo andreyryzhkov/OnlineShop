@@ -1,56 +1,34 @@
-package com.aryzhkov.onlineshop.dao;
+package com.aryzhkov.onlineshop.dao.jdbc;
 
-import com.aryzhkov.onlineshop.dao.connection.JDBCConnection;
-import com.aryzhkov.onlineshop.dao.mapper.RowMapper;
+import com.aryzhkov.onlineshop.dao.IJdbcProductDao;
+import com.aryzhkov.onlineshop.dao.jdbc.connection.JdbcConnection;
+import com.aryzhkov.onlineshop.dao.jdbc.mapper.ProductMapper;
 import com.aryzhkov.onlineshop.entity.Product;
-import com.aryzhkov.onlineshop.entity.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OnlineShopDao implements IOnlineShopDao {
+public class JdbcProductDao implements IJdbcProductDao {
+    private JdbcConnection jdbcConnection;
 
-    public User getUser(String selectSQL) {
-        try (Connection connection = JDBCConnection.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(selectSQL)) {
-
-            RowMapper rowMapper = new RowMapper();
-            User user = new User();
-            while (resultSet.next()) {
-                user = rowMapper.mapRowUser(resultSet);
-            }
-
-            return user;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public User getUserByName(String userName) {
-        String selectSQL = "SELECT \"USERNAME\" as username, \"PASSWORD\" as pass, \"USERTYPE\" as usertype, \"ID\" as id FROM public.\"USERS\"  WHERE \"USERNAME\" = " + "'" + userName + "'";
-        return getUser(selectSQL);
-    }
-
-    @Override
-    public User getUserById(int id) {
-        String selectSQL = "SELECT \"USERNAME\" as username, \"PASSWORD\" as pass, \"USERTYPE\" as usertype, \"ID\" as id FROM public.\"USERS\"  WHERE \"ID\" = " + id;
-
-        return getUser(selectSQL);
+    public JdbcProductDao(JdbcConnection jdbcConnection) {
+        this.jdbcConnection = jdbcConnection;
     }
 
     @Override
     public List<Product> getAllProduct() {
         String selectSQL = "SELECT \"ID\" as id, \"NAME\" as name, \"PRICE\" as price FROM public.\"PRODUCT\"";
 
-        try (Connection connection = JDBCConnection.getConnection();
+        try (Connection connection = jdbcConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectSQL)) {
 
             List<Product> products = new ArrayList<>();
-            RowMapper rowMapper = new RowMapper();
+            ProductMapper rowMapper = new ProductMapper();
             while (resultSet.next()) {
                 Product product = rowMapper.mapRowProduct(resultSet);
                 products.add(product);
@@ -66,11 +44,11 @@ public class OnlineShopDao implements IOnlineShopDao {
     public Product getProductById(int id) {
         String selectSQL = "SELECT \"ID\" as id, \"NAME\" as name, \"PRICE\" as price FROM public.\"PRODUCT\" WHERE \"ID\" = " + id;
 
-        try (Connection connection = JDBCConnection.getConnection();
+        try (Connection connection = jdbcConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectSQL)) {
 
-            RowMapper rowMapper = new RowMapper();
+            ProductMapper rowMapper = new ProductMapper();
             Product product = new Product();
             while (resultSet.next()) {
                 product = rowMapper.mapRowProduct(resultSet);
@@ -86,7 +64,7 @@ public class OnlineShopDao implements IOnlineShopDao {
     public void deleteProduct(int id) {
         String deleteSQL = "DELETE FROM public.\"PRODUCT\" WHERE \"ID\" = " + id;
 
-        try (Connection connection = JDBCConnection.getConnection();
+        try (Connection connection = jdbcConnection.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(deleteSQL);
         } catch (SQLException e) {
@@ -101,7 +79,7 @@ public class OnlineShopDao implements IOnlineShopDao {
         insertSQL.append("'").append(product.getName()).append("'").append(",");
         insertSQL.append("'").append(product.getPrice()).append("'").append(");");
 
-        try (Connection connection = JDBCConnection.getConnection();
+        try (Connection connection = jdbcConnection.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(insertSQL.toString());
         } catch (SQLException e) {
@@ -117,7 +95,7 @@ public class OnlineShopDao implements IOnlineShopDao {
         updateSQL.append("\"PRICE\" = '").append(product.getPrice()).append("'");
         updateSQL.append(" WHERE \"ID\" = ").append(product.getId());
 
-        try (Connection connection = JDBCConnection.getConnection();
+        try (Connection connection = jdbcConnection.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(updateSQL.toString());
         } catch (SQLException e) {
