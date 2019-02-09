@@ -1,4 +1,4 @@
-package com.aryzhkov.onlineshop.web.servlet.servlet;
+package com.aryzhkov.onlineshop.web.servlet.auth;
 
 import com.aryzhkov.onlineshop.entity.User;
 import com.aryzhkov.onlineshop.web.servlet.templater.PageGenerator;

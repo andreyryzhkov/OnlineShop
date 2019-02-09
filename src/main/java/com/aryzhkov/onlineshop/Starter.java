@@ -1,7 +1,10 @@
 package com.aryzhkov.onlineshop;
 
+import com.aryzhkov.onlineshop.dao.jdbc.JdbcProductDao;
+import com.aryzhkov.onlineshop.dao.jdbc.JdbcUserDao;
 import com.aryzhkov.onlineshop.dao.jdbc.connection.JdbcConnection;
-import com.aryzhkov.onlineshop.service.OnlineShopService;
+import com.aryzhkov.onlineshop.service.ProductService;
+import com.aryzhkov.onlineshop.service.UserService;
 import com.aryzhkov.onlineshop.web.servlet.servlet.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -26,31 +29,37 @@ public class Starter {
         JdbcConnection jdbcConnection = new JdbcConnection();
         jdbcConnection.setProperties(properties);
 
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(jdbcConnection);
+        ProductService productService = new ProductService(jdbcProductDao);
 
-/**
-        OnlineShopDao onlineShopDao = new OnlineShopDao();
-        OnlineShopService onlineShopService = new OnlineShopService(onlineShopDao);
-        List<String> users = new ArrayList<>();
+        JdbcUserDao jdbcUserDao = new JdbcUserDao(jdbcConnection);
+        UserService userService = new UserService(jdbcUserDao);
 
-        GetProductServlet getProductServlet = new GetProductServlet(onlineShopService);
-        AddProductServlet addProductServlet = new AddProductServlet(onlineShopService, users);
-        EditProductServlet editProductServlet = new EditProductServlet(onlineShopService, users);
-        DelProductServlet delProductServlet = new DelProductServlet(onlineShopService, users);
-        LoginServlet loginServlet = new LoginServlet(onlineShopService, users);
-        LogoutServlet logoutServlet = new LogoutServlet(users);
+        List<String> tokens = new ArrayList<>();
+
+        GetProductServlet getProductServlet = new GetProductServlet(productService);
+
+        LoginServlet loginServlet = new LoginServlet(userService, tokens);
+        LogoutServlet logoutServlet = new LogoutServlet(tokens);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(getProductServlet), "/products");
-        context.addServlet(new ServletHolder(addProductServlet), "/product/add");
-        context.addServlet(new ServletHolder(editProductServlet), "/product/edit");
-        context.addServlet(new ServletHolder(delProductServlet), "/product/delete");
         context.addServlet(new ServletHolder(loginServlet), "/login");
         context.addServlet(new ServletHolder(logoutServlet), "/logout");
+
+        /**
+         AddProductServlet addProductServlet = new AddProductServlet(productService, tokens);
+         EditProductServlet editProductServlet = new EditProductServlet(onlineShopService, users);
+         DelProductServlet delProductServlet = new DelProductServlet(onlineShopService, users);
+
+         context.addServlet(new ServletHolder(addProductServlet), "/product/add");
+         context.addServlet(new ServletHolder(editProductServlet), "/product/edit");
+         context.addServlet(new ServletHolder(delProductServlet), "/product/delete");
+         */
 
         Server server = new Server(8080);
         server.setHandler(context);
 
         server.start();
- */
     }
 }

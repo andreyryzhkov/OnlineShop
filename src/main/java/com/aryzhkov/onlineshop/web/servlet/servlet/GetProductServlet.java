@@ -1,7 +1,7 @@
 package com.aryzhkov.onlineshop.web.servlet.servlet;
 
 import com.aryzhkov.onlineshop.entity.Product;
-import com.aryzhkov.onlineshop.service.OnlineShopService;
+import com.aryzhkov.onlineshop.service.ProductService;
 import com.aryzhkov.onlineshop.web.servlet.templater.PageGenerator;
 
 import javax.servlet.http.HttpServlet;
@@ -14,19 +14,19 @@ import java.util.Map;
 
 public class GetProductServlet extends HttpServlet {
 
-    private OnlineShopService onlineShopService;
+    private ProductService productService;
 
-    public GetProductServlet(OnlineShopService onlineShopService) {
-        this.onlineShopService = onlineShopService;
+    public GetProductServlet(ProductService productService) {
+        this.productService = productService;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-     //   List<Product> products = onlineShopService.getAllProduct();
+        List<Product> products = productService.getAllProduct();
         PageGenerator pageGenerator = PageGenerator.instance();
 
         Map<String, Object> pageVariables = new HashMap<>();
-      //  pageVariables.put("products", products);
+        pageVariables.put("products", products);
 
         String page = pageGenerator.getPage("allproduct.html", pageVariables);
         response.getWriter().write(page);

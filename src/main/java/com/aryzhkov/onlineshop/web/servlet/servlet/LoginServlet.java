@@ -1,7 +1,8 @@
 package com.aryzhkov.onlineshop.web.servlet.servlet;
 
 import com.aryzhkov.onlineshop.entity.User;
-import com.aryzhkov.onlineshop.service.OnlineShopService;
+import com.aryzhkov.onlineshop.entity.UserType;
+import com.aryzhkov.onlineshop.service.UserService;
 import com.aryzhkov.onlineshop.web.servlet.templater.PageGenerator;
 
 import javax.servlet.http.Cookie;
@@ -12,15 +13,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class LoginServlet extends HttpServlet {
 
-    private OnlineShopService onlineShopService;
-    private List<String> users;
+    private UserService userService;
+    private List<String> tokens;
 
-    public LoginServlet(OnlineShopService onlineShopService, List<String> users) {
-        this.onlineShopService = onlineShopService;
-        this.users = users;
+    public LoginServlet(UserService userService, List<String> tokens) {
+        this.userService = userService;
+        this.tokens = tokens;
     }
 
     @Override
@@ -33,16 +35,25 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String login = req.getParameter("login");
-        //  String password =  req.getParameter("password"); TODO: need to check (Hash)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
 
-      //  User user = onlineShopService.getUserByName(login);
-      //  String token = String.valueOf(user.getId());
-      //  Cookie cookie = new Cookie("UID", token);
-        //resp.addCookie(cookie);
-        //users.add(token);
-
-        resp.sendRedirect("/products");
+        User user = userService.getUserByName(login);
+        if (password.equals(user.getPassword())) {
+            if (UserType.getByName(user.getUserType()) == UserType.ADMIN) {
+                String token = UUID.randomUUID().toString();
+                tokens.add(token);
+                Cookie cookie = new Cookie("token", token);
+                response.addCookie(cookie);
+                response.sendRedirect("/products");
+            } else {
+                response.setContentType("text/html;charset=utf-8");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            }
+        } else {
+            response.setContentType("text/html;charset=utf-8");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid user/password");
+        }
     }
 }

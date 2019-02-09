@@ -24,26 +24,7 @@ public class JdbcUserDao implements IJdbcUserDao {
 
             UserMapper userMapper = new UserMapper();
             if (!resultSet.next()) {
-                return null;
-            }
-            User user = userMapper.mapRowUser(resultSet);
-            return user;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public User getUserById(int id) {
-        try (Connection connection = jdbcConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT \"USERNAME\" as username, \"PASSWORD\" as pass, \"USERTYPE\" as usertype, \"ID\" as id FROM public.\"USERS\"  WHERE \"ID\" = ?");
-        ) {
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-
-            UserMapper userMapper = new UserMapper();
-            if (!resultSet.next()) {
-                return null;
+                throw new SQLException("User is not found");
             }
             User user = userMapper.mapRowUser(resultSet);
             return user;

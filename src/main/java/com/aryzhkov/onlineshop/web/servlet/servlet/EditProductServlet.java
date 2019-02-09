@@ -1,7 +1,7 @@
 package com.aryzhkov.onlineshop.web.servlet.servlet;
 
 import com.aryzhkov.onlineshop.entity.Product;
-import com.aryzhkov.onlineshop.service.OnlineShopService;
+import com.aryzhkov.onlineshop.web.servlet.auth.Authentication;
 import com.aryzhkov.onlineshop.web.servlet.templater.PageGenerator;
 
 import javax.servlet.http.Cookie;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EditProductServlet extends HttpServlet {
-
+/**
     private OnlineShopService onlineShopService;
     private List<String> users;
 
@@ -60,4 +60,5 @@ public class EditProductServlet extends HttpServlet {
 
         response.sendRedirect("/products");
     }
+    */
 }

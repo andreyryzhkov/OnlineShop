@@ -1,5 +1,7 @@
 package com.aryzhkov.onlineshop.web.servlet.servlet;
 
+import com.aryzhkov.onlineshop.web.servlet.auth.Authentication;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

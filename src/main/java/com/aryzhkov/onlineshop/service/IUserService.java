@@ -1,8 +1,9 @@
-package com.aryzhkov.onlineshop.dao;
+package com.aryzhkov.onlineshop.service;
 
 import com.aryzhkov.onlineshop.entity.User;
 
-public interface IJdbcUserDao {
+public interface IUserService {
 
     public User getUserByName(String userName);
+
 }

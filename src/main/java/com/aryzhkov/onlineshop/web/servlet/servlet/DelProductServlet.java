@@ -1,6 +1,6 @@
 package com.aryzhkov.onlineshop.web.servlet.servlet;
 
-import com.aryzhkov.onlineshop.service.OnlineShopService;
+import com.aryzhkov.onlineshop.web.servlet.auth.Authentication;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class DelProductServlet extends HttpServlet {
-
+/**
     private OnlineShopService onlineShopService;
     private List<String> users;
 
@@ -39,4 +39,5 @@ public class DelProductServlet extends HttpServlet {
             }
         }
     }
+    */
 }

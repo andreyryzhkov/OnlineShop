@@ -1,7 +1,6 @@
-package com.aryzhkov.onlineshop.web.servlet.servlet;
+package com.aryzhkov.onlineshop.web.servlet.auth;
 
-import com.aryzhkov.onlineshop.entity.User;
-import com.aryzhkov.onlineshop.service.OnlineShopService;
+import com.aryzhkov.onlineshop.service.UserService;
 
 import javax.servlet.http.Cookie;
 import java.util.List;
@@ -22,7 +21,7 @@ public class Authentication {
         return token;
     }
 
-    public static boolean isAuthorization(OnlineShopService onlineShopService, String token) {
+    public static boolean isAuthorization(UserService onlineShopService, String token) {
         boolean isAuthorization = false;
      //   User user = onlineShopService.getUserById(token);
      //   if (USER_TYPE_ADMIN.equals(user.getUserType())) {

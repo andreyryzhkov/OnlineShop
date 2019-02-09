@@ -5,12 +5,10 @@ import com.aryzhkov.onlineshop.dao.jdbc.connection.JdbcConnection;
 import com.aryzhkov.onlineshop.dao.jdbc.mapper.ProductMapper;
 import com.aryzhkov.onlineshop.entity.Product;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class JdbcProductDao implements IJdbcProductDao {
     private JdbcConnection jdbcConnection;
@@ -42,17 +40,20 @@ public class JdbcProductDao implements IJdbcProductDao {
 
     @Override
     public Product getProductById(int id) {
-        String selectSQL = "SELECT \"ID\" as id, \"NAME\" as name, \"PRICE\" as price FROM public.\"PRODUCT\" WHERE \"ID\" = " + id;
+        String selectSQL = "SELECT \"ID\" as id, \"NAME\" as name, \"PRICE\" as price FROM public.\"PRODUCT\" WHERE \"ID\" = ?";
 
         try (Connection connection = jdbcConnection.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(selectSQL)) {
+             PreparedStatement statement = connection.prepareStatement(selectSQL)) {
+
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
 
             ProductMapper rowMapper = new ProductMapper();
-            Product product = new Product();
-            while (resultSet.next()) {
-                product = rowMapper.mapRowProduct(resultSet);
+            if (!resultSet.next()) {
+                return null;
             }
+
+            Product product = rowMapper.mapRowProduct(resultSet);
             return product;
 
         } catch (SQLException e) {

@@ -1,15 +1,10 @@
 package com.aryzhkov.onlineshop.service;
 
 import com.aryzhkov.onlineshop.entity.Product;
-import com.aryzhkov.onlineshop.entity.User;
 
 import java.util.List;
 
-public interface IOnlineShopService {
-    public User getUserByName(String userName);
-
-    public User getUserById(String token);
-
+public interface IProductService {
     public List<Product> getAllProduct();
 
     public Product getProductById(int id);
