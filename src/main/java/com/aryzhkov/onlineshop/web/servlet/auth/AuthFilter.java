@@ -30,15 +30,14 @@ public class AuthFilter implements Filter {
                     if (securityService.isSessionExists(session)) {
                         if (!securityService.isSessionExpired(session)) {
                             filterChain.doFilter(servletRequest, servletResponse);
-                        } else {
-                            httpServletResponse.sendRedirect("/login");
+                            return;
                         }
                     }
                 }
             }
         }
+        httpServletResponse.sendRedirect("/login");
     }
-
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

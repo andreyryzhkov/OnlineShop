@@ -45,9 +45,9 @@ public class SecurityService {
 
     public boolean isSessionExpired(Session session) {
         if (session.getExpireDate().isAfter(LocalDateTime.now())) {
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     public boolean isSessionExists(Session session) {
