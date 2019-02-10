@@ -1,18 +1,20 @@
 package com.aryzhkov.onlineshop.web.servlet.auth;
 
+import com.aryzhkov.onlineshop.entity.Session;
+import com.aryzhkov.onlineshop.service.SecurityService;
+
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 public class AuthFilter implements Filter {
 
-    private List<String> tokens;
+    private SecurityService securityService;
 
-    public AuthFilter(List<String> tokens) {
-        this.tokens = tokens;
+    public AuthFilter(SecurityService securityService) {
+        this.securityService = securityService;
     }
 
     @Override
@@ -20,26 +22,23 @@ public class AuthFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
-        if (isTokenValid(httpServletRequest, tokens)) {
-            filterChain.doFilter(servletRequest, servletResponse);
-        } else {
-            httpServletResponse.sendRedirect("/login");
-        }
-    }
-
-    private static boolean isTokenValid(HttpServletRequest request, List<String> tokens) {
-        Cookie[] cookies = request.getCookies();
+        Cookie[] cookies = httpServletRequest.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
-                    if (tokens.contains(cookie.getValue())) {
-                        return true;
+                    Session session = securityService.getByToken(cookie.getValue());
+                    if (securityService.isSessionExists(session)) {
+                        if (!securityService.isSessionExpired(session)) {
+                            filterChain.doFilter(servletRequest, servletResponse);
+                        } else {
+                            httpServletResponse.sendRedirect("/login");
+                        }
                     }
                 }
             }
         }
-        return false;
     }
+
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

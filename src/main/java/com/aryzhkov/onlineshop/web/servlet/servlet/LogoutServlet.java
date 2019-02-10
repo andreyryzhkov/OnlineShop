@@ -1,17 +1,19 @@
 package com.aryzhkov.onlineshop.web.servlet.servlet;
 
+import com.aryzhkov.onlineshop.entity.Session;
+import com.aryzhkov.onlineshop.service.SecurityService;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 public class LogoutServlet extends HttpServlet {
-    private List<String> tokens;
+    private SecurityService securityService;
 
-    public LogoutServlet(List<String> tokens) {
-        this.tokens = tokens;
+    public LogoutServlet(SecurityService securityService) {
+        this.securityService = securityService;
     }
 
     @Override
@@ -20,7 +22,8 @@ public class LogoutServlet extends HttpServlet {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
-                    tokens.remove(cookie.getValue());
+                    Session session = securityService.getByToken(cookie.getValue());
+                    securityService.removeSession(session);
                 }
             }
         }

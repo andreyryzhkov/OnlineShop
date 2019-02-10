@@ -3,7 +3,9 @@ package com.aryzhkov.onlineshop;
 import com.aryzhkov.onlineshop.dao.jdbc.JdbcProductDao;
 import com.aryzhkov.onlineshop.dao.jdbc.JdbcUserDao;
 import com.aryzhkov.onlineshop.dao.jdbc.connection.JdbcConnection;
+import com.aryzhkov.onlineshop.entity.Session;
 import com.aryzhkov.onlineshop.service.ProductService;
+import com.aryzhkov.onlineshop.service.SecurityService;
 import com.aryzhkov.onlineshop.service.UserService;
 import com.aryzhkov.onlineshop.web.servlet.auth.AuthFilter;
 import com.aryzhkov.onlineshop.web.servlet.servlet.*;
@@ -14,10 +16,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 import javax.servlet.DispatcherType;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class Starter {
     private static final String PROPERTIES_PATH = "db.properties";
@@ -33,21 +32,22 @@ public class Starter {
         JdbcConnection jdbcConnection = new JdbcConnection();
         jdbcConnection.setProperties(properties);
 
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(jdbcConnection);
-        ProductService productService = new ProductService(jdbcProductDao);
-
         JdbcUserDao jdbcUserDao = new JdbcUserDao(jdbcConnection);
-        UserService userService = new UserService(jdbcUserDao);
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(jdbcConnection);
 
-        List<String> tokens = new ArrayList<>();
+        List<Session> sessions = Collections.synchronizedList(new ArrayList<>());
+
+        UserService userService = new UserService(jdbcUserDao);
+        SecurityService securityService = new SecurityService(userService, sessions);
+        ProductService productService = new ProductService(jdbcProductDao);
 
         GetProductServlet getProductServlet = new GetProductServlet(productService);
         AddProductServlet addProductServlet = new AddProductServlet(productService);
         EditProductServlet editProductServlet = new EditProductServlet(productService);
         DelProductServlet delProductServlet = new DelProductServlet(productService);
 
-        LoginServlet loginServlet = new LoginServlet(userService, tokens);
-        LogoutServlet logoutServlet = new LogoutServlet(tokens);
+        LoginServlet loginServlet = new LoginServlet(securityService);
+        LogoutServlet logoutServlet = new LogoutServlet(securityService);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(getProductServlet), "/products");
@@ -57,7 +57,7 @@ public class Starter {
         context.addServlet(new ServletHolder(loginServlet), "/login");
         context.addServlet(new ServletHolder(logoutServlet), "/logout");
 
-        context.addFilter(new FilterHolder(new AuthFilter(tokens)), "/product/*", EnumSet.of(DispatcherType.REQUEST,
+        context.addFilter(new FilterHolder(new AuthFilter(securityService)), "/product/*", EnumSet.of(DispatcherType.REQUEST,
                 DispatcherType.FORWARD));
 
         Server server = new Server(8080);
