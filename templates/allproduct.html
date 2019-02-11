@@ -37,7 +37,8 @@
         </td>
         <td>
             <form action="/product/delete" method="POST">
-                <input type="button" value="Delete" onclick="window.location.href='/product/delete?id=${product.id}'" />
+                <input type="hidden" name="id" value="${product.id}">
+                <input type="submit" value="Delete"/>
             </form>
         </td>
     </tr>

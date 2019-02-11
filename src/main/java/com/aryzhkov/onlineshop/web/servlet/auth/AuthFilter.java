@@ -22,6 +22,7 @@ public class AuthFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
+        boolean isAuth = false;
         Cookie[] cookies = httpServletRequest.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -29,14 +30,17 @@ public class AuthFilter implements Filter {
                     Session session = securityService.getByToken(cookie.getValue());
                     if (securityService.isSessionExists(session)) {
                         if (!securityService.isSessionExpired(session)) {
+                            isAuth = true;
                             filterChain.doFilter(servletRequest, servletResponse);
-                            return;
                         }
                     }
+                    break;
                 }
             }
         }
-        httpServletResponse.sendRedirect("/login");
+        if (!isAuth) {
+            httpServletResponse.sendRedirect("/login");
+        }
     }
 
     @Override
