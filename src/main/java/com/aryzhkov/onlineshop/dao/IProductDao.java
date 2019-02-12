@@ -4,7 +4,7 @@ import com.aryzhkov.onlineshop.entity.Product;
 
 import java.util.List;
 
-public interface IJdbcProductDao {
+public interface IProductDao {
     public List<Product> getAllProduct();
 
     public Product getProductById(int id);

@@ -22,26 +22,30 @@ public class AuthFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
+        if (!isAuth(httpServletRequest)) {
+            httpServletResponse.sendRedirect("/login");
+        } else {
+            filterChain.doFilter(servletRequest, servletResponse);
+        }
+    }
+
+    private boolean isAuth(HttpServletRequest httpServletRequest) {
         boolean isAuth = false;
         Cookie[] cookies = httpServletRequest.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("token")) {
-                    Session session = securityService.getByToken(cookie.getValue());
-                    if (securityService.isSessionExists(session)) {
-                        if (!securityService.isSessionExpired(session)) {
-                            isAuth = true;
-                            filterChain.doFilter(servletRequest, servletResponse);
-                        }
+                if ("token".equals(cookie.getName())) {
+                    Session session = securityService.getSession(cookie.getValue());
+                    if (session != null) {
+                        isAuth = true;
                     }
-                    break;
                 }
+                break;
             }
         }
-        if (!isAuth) {
-            httpServletResponse.sendRedirect("/login");
-        }
+        return isAuth;
     }
+
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

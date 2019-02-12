@@ -1,15 +1,15 @@
 package com.aryzhkov.onlineshop.service;
 
-import com.aryzhkov.onlineshop.dao.jdbc.JdbcProductDao;
+import com.aryzhkov.onlineshop.dao.jdbc.ProductDao;
 import com.aryzhkov.onlineshop.entity.Product;
 
 import java.util.List;
 
 public class ProductService implements IProductService {
 
-    private JdbcProductDao jdbcProductDao;
+    private ProductDao jdbcProductDao;
 
-    public ProductService(JdbcProductDao jdbcProductDao) {
+    public ProductService(ProductDao jdbcProductDao) {
         this.jdbcProductDao = jdbcProductDao;
     }
 

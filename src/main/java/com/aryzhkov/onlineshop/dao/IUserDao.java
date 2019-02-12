@@ -2,7 +2,7 @@ package com.aryzhkov.onlineshop.dao;
 
 import com.aryzhkov.onlineshop.entity.User;
 
-public interface IJdbcUserDao {
+public interface IUserDao {
 
     public User getUserByName(String userName);
 }

@@ -1,9 +1,8 @@
 package com.aryzhkov.onlineshop;
 
-import com.aryzhkov.onlineshop.dao.jdbc.JdbcProductDao;
-import com.aryzhkov.onlineshop.dao.jdbc.JdbcUserDao;
-import com.aryzhkov.onlineshop.dao.jdbc.connection.JdbcConnection;
-import com.aryzhkov.onlineshop.entity.Session;
+import com.aryzhkov.onlineshop.dao.jdbc.ProductDao;
+import com.aryzhkov.onlineshop.dao.jdbc.UserDao;
+import com.aryzhkov.onlineshop.dao.jdbc.datasource.PGSDataSource;
 import com.aryzhkov.onlineshop.service.ProductService;
 import com.aryzhkov.onlineshop.service.SecurityService;
 import com.aryzhkov.onlineshop.service.UserService;
@@ -15,6 +14,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import javax.servlet.DispatcherType;
+import javax.sql.DataSource;
 import java.io.FileInputStream;
 import java.util.*;
 
@@ -29,16 +29,15 @@ public class Starter {
             properties.load(fileInputStream);
         }
 
-        JdbcConnection jdbcConnection = new JdbcConnection();
-        jdbcConnection.setProperties(properties);
+        PGSDataSource pgsDataSource = new PGSDataSource();
+        pgsDataSource.setProperties(properties);
+        DataSource dataSource = pgsDataSource.createDataSource();
 
-        JdbcUserDao jdbcUserDao = new JdbcUserDao(jdbcConnection);
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(jdbcConnection);
-
-        List<Session> sessions = Collections.synchronizedList(new ArrayList<>());
+        UserDao jdbcUserDao = new UserDao(dataSource);
+        ProductDao jdbcProductDao = new ProductDao(dataSource);
 
         UserService userService = new UserService(jdbcUserDao);
-        SecurityService securityService = new SecurityService(userService, sessions);
+        SecurityService securityService = new SecurityService(userService);
         ProductService productService = new ProductService(jdbcProductDao);
 
         GetProductServlet getProductServlet = new GetProductServlet(productService);

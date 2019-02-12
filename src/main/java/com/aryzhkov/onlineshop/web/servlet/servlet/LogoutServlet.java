@@ -22,7 +22,7 @@ public class LogoutServlet extends HttpServlet {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
-                    Session session = securityService.getByToken(cookie.getValue());
+                    Session session = securityService.getSession(cookie.getValue());
                     securityService.removeSession(session);
                 }
             }

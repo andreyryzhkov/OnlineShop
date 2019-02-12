@@ -5,16 +5,17 @@ import com.aryzhkov.onlineshop.entity.User;
 import com.aryzhkov.onlineshop.entity.UserType;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 public class SecurityService {
     private UserService userService;
-    private List<Session> sessions;
+    private List<Session> sessions = Collections.synchronizedList(new ArrayList<>());
 
-    public SecurityService(UserService userService, List<Session> sessions) {
+    public SecurityService(UserService userService) {
         this.userService = userService;
-        this.sessions = sessions;
     }
 
     public Session login(String login, String password) {
@@ -34,9 +35,13 @@ public class SecurityService {
         return null;
     }
 
-    public Session getByToken(String token) {
+    public Session getSession(String token) {
         for (Session session : sessions) {
             if (session.getToken().equals(token)) {
+                if (isSessionExpired(session)) {
+                    sessions.remove(session);
+                    return null;
+                }
                 return session;
             }
         }
@@ -48,13 +53,6 @@ public class SecurityService {
             return false;
         }
         return true;
-    }
-
-    public boolean isSessionExists(Session session) {
-        if (sessions.contains(session)) {
-            return true;
-        }
-        return false;
     }
 
     public void removeSession(Session session) {

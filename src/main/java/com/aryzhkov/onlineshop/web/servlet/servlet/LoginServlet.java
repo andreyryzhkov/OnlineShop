@@ -37,7 +37,6 @@ public class LoginServlet extends HttpServlet {
         Session session = securityService.login(login, password);
         if (session != null) {
             Cookie cookie = new Cookie("token", session.getToken());
-            cookie.setMaxAge(session.getExpireDate().getSecond());
             response.addCookie(cookie);
             response.sendRedirect("/products");
         } else {

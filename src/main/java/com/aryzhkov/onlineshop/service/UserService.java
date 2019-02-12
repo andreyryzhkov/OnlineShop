@@ -1,13 +1,13 @@
 package com.aryzhkov.onlineshop.service;
 
-import com.aryzhkov.onlineshop.dao.jdbc.JdbcUserDao;
+import com.aryzhkov.onlineshop.dao.jdbc.UserDao;
 import com.aryzhkov.onlineshop.entity.User;
 
 public class UserService implements IUserService {
 
-    private JdbcUserDao jdbcUserDaoDao;
+    private UserDao jdbcUserDaoDao;
 
-    public UserService(JdbcUserDao jdbcUserDaoDao) {
+    public UserService(UserDao jdbcUserDaoDao) {
         this.jdbcUserDaoDao = jdbcUserDaoDao;
     }
 
