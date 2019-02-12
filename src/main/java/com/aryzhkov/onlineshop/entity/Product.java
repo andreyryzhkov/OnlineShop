@@ -1,7 +1,12 @@
 package com.aryzhkov.onlineshop.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 
+@Getter
+@Setter
 public class Product {
     private int id;
     private String name;
@@ -21,38 +26,6 @@ public class Product {
         this.id = id;
         this.name = name;
         this.price = price;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public void setDateMaking(LocalDate dateMaking) {
-        this.dateMaking = dateMaking;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public LocalDate getDateMaking() {
-        return dateMaking;
     }
 
     @Override

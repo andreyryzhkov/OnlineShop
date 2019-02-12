@@ -39,7 +39,7 @@ public class SecurityService {
         for (Session session : sessions) {
             if (session.getToken().equals(token)) {
                 if (isSessionExpired(session)) {
-                    sessions.remove(session);
+                    removeSession(session);
                     return null;
                 }
                 return session;
@@ -48,11 +48,8 @@ public class SecurityService {
         return null;
     }
 
-    public boolean isSessionExpired(Session session) {
-        if (session.getExpireDate().isAfter(LocalDateTime.now())) {
-            return false;
-        }
-        return true;
+    private boolean isSessionExpired(Session session) {
+        return !session.getExpireDate().isAfter(LocalDateTime.now());
     }
 
     public void removeSession(Session session) {
