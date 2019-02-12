@@ -2,7 +2,9 @@ package com.aryzhkov.onlineshop.entity;
 
 public enum UserType {
 
-    ADMIN("ADMIN");
+    ADMIN("ADMIN"),
+    USER("USER"),
+    GUEST("GUEST");
 
     private final String name;
 
