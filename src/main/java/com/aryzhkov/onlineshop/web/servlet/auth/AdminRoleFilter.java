@@ -1,8 +1,11 @@
 package com.aryzhkov.onlineshop.web.servlet.auth;
 
+import com.aryzhkov.onlineshop.entity.UserType;
 import com.aryzhkov.onlineshop.service.SecurityService;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AdminRoleFilter implements Filter {
@@ -19,7 +22,17 @@ public class AdminRoleFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
+        Auth auth = new Auth(securityService);
+        UserType userType = auth.getUserType(httpServletRequest);
+
+        if (userType == UserType.ADMIN) {
+            filterChain.doFilter(servletRequest, servletResponse);
+        } else {
+            httpServletResponse.sendRedirect("/login");
+        }
     }
 
     @Override

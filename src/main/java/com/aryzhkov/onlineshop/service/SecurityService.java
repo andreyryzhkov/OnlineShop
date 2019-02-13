@@ -22,15 +22,13 @@ public class SecurityService {
         User user = userService.getUserByName(login);
 
         if (password.equals(user.getPassword())) {
-            if (UserType.getByName(user.getUserType()) == UserType.ADMIN) {
-                Session session = new Session();
-                String token = UUID.randomUUID().toString();
-                session.setToken(token);
-                session.setUser(user);
-                session.setExpireDate(LocalDateTime.now().plusHours(2));
-                sessions.add(session);
-                return session;
-            }
+            Session session = new Session();
+            String token = UUID.randomUUID().toString();
+            session.setToken(token);
+            session.setUser(user);
+            session.setExpireDate(LocalDateTime.now().plusHours(2));
+            sessions.add(session);
+            return session;
         }
         return null;
     }

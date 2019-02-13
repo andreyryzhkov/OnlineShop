@@ -7,7 +7,7 @@ import com.aryzhkov.onlineshop.service.ProductService;
 import com.aryzhkov.onlineshop.service.SecurityService;
 import com.aryzhkov.onlineshop.service.UserService;
 import com.aryzhkov.onlineshop.web.servlet.auth.AdminRoleFilter;
-import com.aryzhkov.onlineshop.web.servlet.auth.AuthFilter;
+import com.aryzhkov.onlineshop.web.servlet.auth.UserRoleFilter;
 import com.aryzhkov.onlineshop.web.servlet.servlet.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -57,12 +57,15 @@ public class Starter {
         context.addServlet(new ServletHolder(loginServlet), "/login");
         context.addServlet(new ServletHolder(logoutServlet), "/logout");
 
-        context.addFilter(new FilterHolder(new AuthFilter(securityService)), "/product/*", EnumSet.of(DispatcherType.REQUEST,
-                DispatcherType.FORWARD));
-
+        // ADMIN
         context.addFilter(new FilterHolder(new AdminRoleFilter(securityService)), "/product/add",
                 EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
         context.addFilter(new FilterHolder(new AdminRoleFilter(securityService)), "/product/edit",
+                EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
+        // USER
+        context.addFilter(new FilterHolder(new UserRoleFilter(securityService)), "/products",
+                EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
+        context.addFilter(new FilterHolder(new UserRoleFilter(securityService)), "/logout",
                 EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
 
         Server server = new Server(8080);
