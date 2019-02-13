@@ -1,9 +1,13 @@
 package com.aryzhkov.onlineshop.service;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.aryzhkov.onlineshop.entity.Session;
 import com.aryzhkov.onlineshop.entity.User;
-import com.aryzhkov.onlineshop.entity.UserType;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +24,9 @@ public class SecurityService {
 
     public Session login(String login, String password) {
         User user = userService.getUserByName(login);
+        String securePassword = getSecurePassword(password, user.getSalt());
 
-        if (password.equals(user.getPassword())) {
+        if (securePassword.equals(user.getPassword())) {
             Session session = new Session();
             String token = UUID.randomUUID().toString();
             session.setToken(token);
@@ -46,11 +51,35 @@ public class SecurityService {
         return null;
     }
 
+    public void removeSession(Session session) {
+        sessions.remove(session);
+    }
+
     private boolean isSessionExpired(Session session) {
         return !session.getExpireDate().isAfter(LocalDateTime.now());
     }
 
-    public void removeSession(Session session) {
-        sessions.remove(session);
+    public static String getSecurePassword(String passwordToHash, String salt) {
+        String generatedPassword = null;
+        byte[] saltBytes = salt.getBytes();
+        try {
+            // Create MessageDigest instance for MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            //Add password bytes to digest
+            md.update(saltBytes);
+            //Get the hash's bytes
+            byte[] bytes = md.digest(passwordToHash.getBytes());
+            //This bytes[] has bytes in decimal format;
+            //Convert it to hexadecimal format
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            //Get complete hashed password in hex format
+            generatedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return generatedPassword;
     }
 }
