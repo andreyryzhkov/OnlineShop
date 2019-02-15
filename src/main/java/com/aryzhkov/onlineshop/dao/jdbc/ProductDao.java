@@ -19,7 +19,7 @@ public class ProductDao implements IProductDao {
 
     @Override
     public List<Product> getAllProduct() {
-        String selectSQL = "SELECT \"ID\" as id, \"NAME\" as name, \"PRICE\" as price FROM public.\"PRODUCT\"";
+        String selectSQL = "SELECT \"ID\" as id, \"NAME\" as name, \"PRICE\" as price, \"DATEMAKING\" as datemaking FROM public.\"PRODUCT\"";
 
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
@@ -39,7 +39,7 @@ public class ProductDao implements IProductDao {
 
     @Override
     public Product getProductById(int id) {
-        String selectSQL = "SELECT \"ID\" as id, \"NAME\" as name, \"PRICE\" as price FROM public.\"PRODUCT\" WHERE \"ID\" = ?";
+        String selectSQL = "SELECT \"ID\" as id, \"NAME\" as name, \"PRICE\" as price, \"DATEMAKING\" as datemaking FROM public.\"PRODUCT\" WHERE \"ID\" = ?";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(selectSQL)) {

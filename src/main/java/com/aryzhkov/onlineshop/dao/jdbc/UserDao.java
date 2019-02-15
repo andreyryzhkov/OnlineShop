@@ -19,7 +19,7 @@ public class UserDao implements IUserDao {
     public User getUserByName(String userName) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT \"USERNAME\" as username, \"PASSWORD\" as pass," +
-                     "\"USERTYPE\" as usertype, \"ID\" as id FROM public.\"USERS\"  WHERE \"USERNAME\" = ?")) {
+                     "\"USERTYPE\" as usertype, \"ID\" as id, \"SALT\" as salt FROM public.\"USERS\"  WHERE \"USERNAME\" = ?")) {
             statement.setString(1, userName);
             try (ResultSet resultSet = statement.executeQuery()) {
 

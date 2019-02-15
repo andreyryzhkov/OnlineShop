@@ -2,8 +2,11 @@ package com.aryzhkov.onlineshop.dao.jdbc.mapper;
 
 import com.aryzhkov.onlineshop.entity.Product;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ProductMapper {
 
@@ -12,6 +15,7 @@ public class ProductMapper {
         product.setId(resultSet.getInt("id"));
         product.setName(resultSet.getString("name"));
         product.setPrice(resultSet.getDouble("price"));
+        product.setDateMaking(resultSet.getDate("datemaking").toLocalDate());
 
         return product;
     }
