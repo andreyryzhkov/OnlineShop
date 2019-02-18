@@ -1,6 +1,7 @@
 package com.aryzhkov.onlineshop.web.servlet.servlet;
 
 import com.aryzhkov.onlineshop.entity.Session;
+import com.aryzhkov.onlineshop.entity.User;
 import com.aryzhkov.onlineshop.service.SecurityService;
 import com.aryzhkov.onlineshop.web.servlet.templater.PageGenerator;
 
@@ -34,7 +35,9 @@ public class LoginServlet extends HttpServlet {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
-        Session session = securityService.login(login, password);
+        User user = securityService.login(login, password);
+        Session session = securityService.getSession(user);
+
         if (session != null) {
             Cookie cookie = new Cookie("token", session.getToken());
             response.addCookie(cookie);

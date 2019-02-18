@@ -46,6 +46,7 @@ public class Starter {
         EditProductServlet editProductServlet = new EditProductServlet(productService);
         DelProductServlet delProductServlet = new DelProductServlet(productService);
 
+        RegistrationServlet registrationServlet = new RegistrationServlet(securityService);
         LoginServlet loginServlet = new LoginServlet(securityService);
         LogoutServlet logoutServlet = new LogoutServlet(securityService);
 
@@ -56,6 +57,7 @@ public class Starter {
         context.addServlet(new ServletHolder(delProductServlet), "/product/delete");
         context.addServlet(new ServletHolder(loginServlet), "/login");
         context.addServlet(new ServletHolder(logoutServlet), "/logout");
+        context.addServlet(new ServletHolder(registrationServlet), "/registration");
 
         // ADMIN
         context.addFilter(new FilterHolder(new AdminRoleFilter(securityService)), "/product/add",

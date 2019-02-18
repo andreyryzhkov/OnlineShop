@@ -3,6 +3,7 @@ package com.aryzhkov.onlineshop.dao.jdbc;
 import com.aryzhkov.onlineshop.dao.IUserDao;
 import com.aryzhkov.onlineshop.dao.jdbc.mapper.UserMapper;
 import com.aryzhkov.onlineshop.entity.User;
+import com.aryzhkov.onlineshop.entity.UserType;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -19,7 +20,7 @@ public class UserDao implements IUserDao {
     public User getUserByName(String userName) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT \"USERNAME\" as username, \"PASSWORD\" as pass," +
-                     "\"USERTYPE\" as usertype, \"ID\" as id, \"SALT\" as salt FROM public.\"USERS\"  WHERE \"USERNAME\" = ?")) {
+                     "\"USERTYPE\" as usertype, \"ID\" as id, \"SALT\" as salt, \"SALT_BYTE\" as salt_byte FROM public.\"USERS\"  WHERE \"USERNAME\" = ?")) {
             statement.setString(1, userName);
             try (ResultSet resultSet = statement.executeQuery()) {
 
@@ -42,7 +43,7 @@ public class UserDao implements IUserDao {
              PreparedStatement statement = connection.prepareStatement(insertSQL)) {
             statement.setString(1, user.getUserName());
             statement.setString(2, user.getPassword());
-            statement.setString(3, user.getUserType());
+            statement.setString(3, user.getUserType().toString());
             statement.setString(4, user.getSalt());
             statement.setBytes(5, user.getSaltBytes());
             statement.executeUpdate();

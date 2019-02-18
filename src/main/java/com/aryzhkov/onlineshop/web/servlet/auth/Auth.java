@@ -22,7 +22,7 @@ public class Auth {
                 if ("token".equals(cookie.getName())) {
                     Session session = securityService.getSession(cookie.getValue());
                     if (session != null) {
-                        return UserType.getByName(session.getUser().getUserType());
+                        return session.getUser().getUserType();
                     }
                 }
                 break;

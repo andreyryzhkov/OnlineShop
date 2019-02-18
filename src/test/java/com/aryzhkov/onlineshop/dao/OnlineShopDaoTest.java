@@ -8,6 +8,7 @@ import com.aryzhkov.onlineshop.entity.Product;
 import com.aryzhkov.onlineshop.entity.User;
 import com.aryzhkov.onlineshop.entity.UserType;
 import com.aryzhkov.onlineshop.service.SecurityService;
+import com.aryzhkov.onlineshop.service.UserService;
 import org.junit.Test;
 
 import javax.sql.DataSource;
@@ -47,11 +48,12 @@ public class OnlineShopDaoTest {
         pgsDataSource.setProperties(properties);
         DataSource dataSource = pgsDataSource.createDataSource();
         UserDao jdbcUserDao = new UserDao(dataSource);
+        UserService userService = new UserService(jdbcUserDao);
+        SecurityService securityService = new SecurityService(userService);
 
-        byte[] bytes = SecurityService.getSalt();
-        User user = new User("user11", "2d5e42f3d70348d1b4f1b8bd76c8825f", "ADMIN", "salt11", bytes);
-        jdbcUserDao.addUser(user);
-
+        String login = "user20";
+        String password = "user20";
+       // User user = securityService.registration(login, password);
     }
 
     @Test

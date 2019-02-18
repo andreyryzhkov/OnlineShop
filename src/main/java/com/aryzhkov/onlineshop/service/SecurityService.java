@@ -2,6 +2,7 @@ package com.aryzhkov.onlineshop.service;
 
 import com.aryzhkov.onlineshop.entity.Session;
 import com.aryzhkov.onlineshop.entity.User;
+import com.aryzhkov.onlineshop.entity.UserType;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -20,20 +21,32 @@ public class SecurityService {
         this.userService = userService;
     }
 
-    public Session login(String login, String password) {
+    public User newUser(String login, String password, String usertype) {
+        byte[] salt = getSalt();
+        String securePassword = SecurityService.getSecurePassword(password, salt);
+        User user = new User(login, securePassword, UserType.getByName(usertype), "salt15", salt);
+        userService.addUser(user);
+        return user;
+    }
+
+    public User login(String login, String password) {
         User user = userService.getUserByName(login);
-        String securePassword = getSecurePassword(password, user.getSalt());
+        String securePassword = getSecurePassword(password, user.getSaltBytes());
 
         if (securePassword.equals(user.getPassword())) {
-            Session session = new Session();
-            String token = UUID.randomUUID().toString();
-            session.setToken(token);
-            session.setUser(user);
-            session.setExpireDate(LocalDateTime.now().plusHours(2));
-            sessions.add(session);
-            return session;
+            return user;
         }
         return null;
+    }
+
+    public Session getSession(User user) {
+        Session session = new Session();
+        String token = UUID.randomUUID().toString();
+        session.setToken(token);
+        session.setUser(user);
+        session.setExpireDate(LocalDateTime.now().plusHours(2));
+        sessions.add(session);
+        return session;
     }
 
     public Session getSession(String token) {
@@ -57,12 +70,12 @@ public class SecurityService {
         return !session.getExpireDate().isAfter(LocalDateTime.now());
     }
 
-    public static String getSecurePassword(String passwordToHash, String salt) {
+    public static String getSecurePassword(String passwordToHash, byte[] salt) {
         String generatedPassword = null;
-        byte[] saltBytes = salt.getBytes();
+        //   byte[] saltBytes = salt.getBytes();
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(saltBytes);
+            md.update(salt);
             byte[] bytes = md.digest(passwordToHash.getBytes());
             StringBuilder sb = new StringBuilder();
             for (byte aByte : bytes) {
@@ -75,15 +88,19 @@ public class SecurityService {
         return generatedPassword;
     }
 
-    public static byte[] getSalt() throws NoSuchAlgorithmException
-    {
+    public static byte[] getSalt() {
         //Always use a SecureRandom generator
-        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-        //Create array for salt
-        byte[] salt = new byte[16];
-        //Get a random salt
-        sr.nextBytes(salt);
-        //return salt
-        return salt;
+        SecureRandom sr = null;
+        try {
+            sr = SecureRandom.getInstance("SHA1PRNG");
+            //Create array for salt
+            byte[] salt = new byte[16];
+            //Get a random salt
+            sr.nextBytes(salt);
+            //return salt
+            return salt;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

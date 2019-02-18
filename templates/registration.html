@@ -7,7 +7,7 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 </head>
 <body>
-<h1 align="center">Login</h1>
+<h1 align="center">Registration</h1>
 <div class="container">
     <form action="/registration" method="POST">
         <div class="form-group">
@@ -15,7 +15,12 @@
             <input type="text" class="form-control" id="login" required name="login">
             <label for="password">Password</label>
             <input type="text" class="form-control" id="password" required name="password">
-            <input type="submit" class="btn btn-dark" value="Login">
+            <select name="userrole">
+                <option value="ADMIN">ADMIN</option>
+                <option value="USER" selected>USER</option>
+                <option value="GUEST">GUEST</option>
+            </select>
+            <input type="submit" class="btn btn-dark" value="Registration">
         </div>
     </form>
 </div>
