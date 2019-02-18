@@ -22,6 +22,7 @@
         <th scope="col">ID</th>
         <th scope="col">ProductName</th>
         <th scope="col">Price</th>
+        <th scope="col">Production date</th>
     </tr>
     </thead>
     <tbody>
@@ -30,6 +31,7 @@
         <td>${product.id}</td>
         <td>${product.name}</td>
         <td>${product.price}</td>
+        <td>${product.dateMaking}</td>
         <td>
             <form action="/product/edit" method="GET">
                 <input type="button" value="Edit" onclick="window.location.href='/product/edit?id=${product.id}'" />

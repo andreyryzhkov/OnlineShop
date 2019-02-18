@@ -6,6 +6,7 @@ import com.aryzhkov.onlineshop.dao.jdbc.UserDao;
 import com.aryzhkov.onlineshop.dao.jdbc.datasource.PGSDataSource;
 import com.aryzhkov.onlineshop.entity.Product;
 import com.aryzhkov.onlineshop.entity.User;
+import com.aryzhkov.onlineshop.service.SecurityService;
 import org.junit.Test;
 
 import javax.sql.DataSource;

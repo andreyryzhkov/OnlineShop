@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 
 public class AddProductServlet extends HttpServlet {
@@ -30,8 +31,9 @@ public class AddProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String name = request.getParameter("productname");
         double price = Double.parseDouble(request.getParameter("price"));
+        LocalDate dateMaking = LocalDate.parse(request.getParameter("datemaking"));
 
-        Product product = new Product(name, price);
+        Product product = new Product(name, price, dateMaking);
         productService.insertProduct(product);
 
         response.sendRedirect("/products");
