@@ -6,12 +6,15 @@ import com.aryzhkov.onlineshop.dao.jdbc.UserDao;
 import com.aryzhkov.onlineshop.dao.jdbc.datasource.PGSDataSource;
 import com.aryzhkov.onlineshop.entity.Product;
 import com.aryzhkov.onlineshop.entity.User;
+import com.aryzhkov.onlineshop.entity.UserType;
 import com.aryzhkov.onlineshop.service.SecurityService;
 import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Properties;
 
@@ -30,6 +33,25 @@ public class OnlineShopDaoTest {
         DataSource dataSource = pgsDataSource.createDataSource();
         UserDao jdbcUserDao = new UserDao(dataSource);
         User user = jdbcUserDao.getUserByName("user1");
+    }
+
+    @Test
+    public void testAddUser() throws IOException, NoSuchAlgorithmException {
+        Properties properties = new Properties();
+
+        try (FileInputStream fileInputStream = new FileInputStream("db.properties")) {
+            properties.load(fileInputStream);
+        }
+
+        PGSDataSource pgsDataSource = new PGSDataSource();
+        pgsDataSource.setProperties(properties);
+        DataSource dataSource = pgsDataSource.createDataSource();
+        UserDao jdbcUserDao = new UserDao(dataSource);
+
+        byte[] bytes = SecurityService.getSalt();
+        User user = new User("user11", "2d5e42f3d70348d1b4f1b8bd76c8825f", "ADMIN", "salt11", bytes);
+        jdbcUserDao.addUser(user);
+
     }
 
     @Test

@@ -5,6 +5,7 @@ import com.aryzhkov.onlineshop.entity.User;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,5 +73,17 @@ public class SecurityService {
             e.printStackTrace();
         }
         return generatedPassword;
+    }
+
+    public static byte[] getSalt() throws NoSuchAlgorithmException
+    {
+        //Always use a SecureRandom generator
+        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+        //Create array for salt
+        byte[] salt = new byte[16];
+        //Get a random salt
+        sr.nextBytes(salt);
+        //return salt
+        return salt;
     }
 }

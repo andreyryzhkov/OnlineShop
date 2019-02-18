@@ -15,4 +15,9 @@ public class UserService implements IUserService {
     public User getUserByName(String userName) {
         return jdbcUserDaoDao.getUserByName(userName);
     }
+
+    @Override
+    public void addUser(User user) {
+        jdbcUserDaoDao.addUser(user);
+    }
 }

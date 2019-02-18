@@ -34,4 +34,22 @@ public class UserDao implements IUserDao {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void addUser(User user) {
+        String insertSQL = "insert into public.\"USERS\" (\"USERNAME\", \"PASSWORD\", \"USERTYPE\", \"SALT\", \"SALT_BYTE\") VALUES (?,?,?,?,?)";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(insertSQL)) {
+            statement.setString(1, user.getUserName());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getUserType());
+            statement.setString(4, user.getSalt());
+            statement.setBytes(5, user.getSaltBytes());
+            statement.executeUpdate();
+
+        } catch (
+                SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

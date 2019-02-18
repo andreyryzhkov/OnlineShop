@@ -11,8 +11,8 @@ public class SecurityServiceTest {
 
     @Test
     public void getSecurePassword() throws NoSuchProviderException, NoSuchAlgorithmException {
-        String passwordToHash = "user1";
-        String salt = "salt1";
+        String passwordToHash = "user10";
+        String salt = "salt10";
         System.out.println(SecurityService.getSecurePassword(passwordToHash, salt));
     }
 }
