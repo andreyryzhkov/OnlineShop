@@ -51,9 +51,9 @@ public class OnlineShopDaoTest {
         UserService userService = new UserService(jdbcUserDao);
         SecurityService securityService = new SecurityService(userService);
 
-        String login = "user20";
-        String password = "user20";
-       // User user = securityService.registration(login, password);
+        String login = "user2";
+        String password = "user2";
+        User user = securityService.newUser(login, password, "USER");
     }
 
     @Test

@@ -1,7 +1,9 @@
 package com.aryzhkov.onlineshop.web.servlet.auth;
 
+import com.aryzhkov.onlineshop.entity.Session;
 import com.aryzhkov.onlineshop.entity.UserType;
 import com.aryzhkov.onlineshop.service.SecurityService;
+import org.eclipse.jetty.http.HttpStatus;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -26,12 +28,17 @@ public class AdminRoleFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
         Auth auth = new Auth(securityService);
-        UserType userType = auth.getUserType(httpServletRequest);
+        Session session = auth.getSession(httpServletRequest);
 
-        if (userType == UserType.ADMIN) {
-            filterChain.doFilter(servletRequest, servletResponse);
-        } else {
+        if (session == null) {
             httpServletResponse.sendRedirect("/login");
+        } else {
+            UserType userType = session.getUser().getUserType();
+            if (userType == UserType.ADMIN) {
+                filterChain.doFilter(servletRequest, servletResponse);
+            } else {
+                httpServletResponse.sendError(HttpStatus.UNAUTHORIZED_401, "Cannot access for add/edit product");
+            }
         }
     }
 

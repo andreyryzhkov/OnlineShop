@@ -11,11 +11,10 @@ public class UserMapper {
     public User mapRowUser(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setUserName(resultSet.getString("username"));
-        user.setPassword(resultSet.getString("pass"));
+        user.setPassword(resultSet.getBytes("password"));
         user.setUserType(UserType.getByName(resultSet.getString("usertype")));
         user.setId(resultSet.getInt("id"));
-        user.setSalt(resultSet.getString("salt"));
-        user.setSaltBytes(resultSet.getBytes("salt_byte"));
+        user.setSalt(resultSet.getBytes("salt"));
 
         return user;
     }
