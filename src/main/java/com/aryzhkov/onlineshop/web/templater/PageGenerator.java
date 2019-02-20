@@ -1,4 +1,4 @@
-package com.aryzhkov.onlineshop.web.servlet.templater;
+package com.aryzhkov.onlineshop.web.templater;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;

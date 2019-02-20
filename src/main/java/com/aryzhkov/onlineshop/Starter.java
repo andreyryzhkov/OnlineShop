@@ -6,9 +6,9 @@ import com.aryzhkov.onlineshop.dao.jdbc.datasource.PGSDataSource;
 import com.aryzhkov.onlineshop.service.ProductService;
 import com.aryzhkov.onlineshop.service.SecurityService;
 import com.aryzhkov.onlineshop.service.UserService;
-import com.aryzhkov.onlineshop.web.servlet.auth.AdminRoleFilter;
-import com.aryzhkov.onlineshop.web.servlet.auth.UserRoleFilter;
-import com.aryzhkov.onlineshop.web.servlet.servlet.*;
+import com.aryzhkov.onlineshop.web.auth.AdminRoleFilter;
+import com.aryzhkov.onlineshop.web.auth.UserRoleFilter;
+import com.aryzhkov.onlineshop.web.servlet.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -20,7 +20,7 @@ import java.io.FileInputStream;
 import java.util.*;
 
 public class Starter {
-    private static final String PROPERTIES_PATH = "db.properties";
+    private static final String PROPERTIES_PATH = "src/main/resources/db.properties";
 
     public static void main(String[] args) throws Exception {
 

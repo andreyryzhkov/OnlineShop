@@ -1,9 +1,9 @@
-package com.aryzhkov.onlineshop.web.servlet.servlet;
+package com.aryzhkov.onlineshop.web.servlet;
 
 import com.aryzhkov.onlineshop.entity.Session;
 import com.aryzhkov.onlineshop.entity.User;
 import com.aryzhkov.onlineshop.service.SecurityService;
-import com.aryzhkov.onlineshop.web.servlet.templater.PageGenerator;
+import com.aryzhkov.onlineshop.web.templater.PageGenerator;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;

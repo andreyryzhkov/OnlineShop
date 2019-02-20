@@ -5,19 +5,19 @@ import com.aryzhkov.onlineshop.entity.User;
 
 public class UserService implements IUserService {
 
-    private UserDao jdbcUserDaoDao;
+    private UserDao userDao;
 
-    public UserService(UserDao jdbcUserDaoDao) {
-        this.jdbcUserDaoDao = jdbcUserDaoDao;
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     @Override
     public User getUserByName(String userName) {
-        return jdbcUserDaoDao.getUserByName(userName);
+        return userDao.getUserByName(userName);
     }
 
     @Override
     public void addUser(User user) {
-        jdbcUserDaoDao.addUser(user);
+        userDao.addUser(user);
     }
 }

@@ -18,10 +18,10 @@ public class SecurityService {
         this.userService = userService;
     }
 
-    public User newUser(String login, String password, String usertype) {
+    public User newUser(String login, String password, UserType usertype) {
         byte[] salt = getSalt();
         byte[] securePassword = SecurityService.getSecurePassword(password, salt);
-        User user = new User(login, securePassword, UserType.getByName(usertype), salt);
+        User user = new User(login, securePassword, usertype, salt);
         userService.addUser(user);
 
         return user;

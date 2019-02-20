@@ -8,6 +8,11 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 public class UserDao implements IUserDao {
+    private static final String GET_USER_BY_NAME_SQL = "SELECT \"USERNAME\" as username, \"PASSWORD\" as password," +
+            "\"USERTYPE\" as usertype, \"ID\" as id, \"SALT\" as salt FROM public.\"USERS\"  WHERE \"USERNAME\" = ?";
+
+    private static final String INSERT_SQL = "insert into public.\"USERS\" (\"USERNAME\", \"PASSWORD\", \"USERTYPE\", \"SALT\") VALUES (?,?,?,?)";
+
     private static final UserMapper USER_MAPPER = new UserMapper();
     private DataSource dataSource;
 
@@ -18,8 +23,7 @@ public class UserDao implements IUserDao {
     @Override
     public User getUserByName(String userName) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT \"USERNAME\" as username, \"PASSWORD\" as password," +
-                     "\"USERTYPE\" as usertype, \"ID\" as id, \"SALT\" as salt FROM public.\"USERS\"  WHERE \"USERNAME\" = ?")) {
+             PreparedStatement statement = connection.prepareStatement(GET_USER_BY_NAME_SQL)) {
             statement.setString(1, userName);
             try (ResultSet resultSet = statement.executeQuery()) {
 
@@ -37,17 +41,15 @@ public class UserDao implements IUserDao {
 
     @Override
     public void addUser(User user) {
-        String insertSQL = "insert into public.\"USERS\" (\"USERNAME\", \"PASSWORD\", \"USERTYPE\", \"SALT\") VALUES (?,?,?,?)";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(insertSQL)) {
+             PreparedStatement statement = connection.prepareStatement(INSERT_SQL)) {
             statement.setString(1, user.getUserName());
             statement.setBytes(2, user.getPassword());
-            statement.setString(3, user.getUserType().toString());
+            statement.setString(3, user.getUserType().getName());
             statement.setBytes(4, user.getSalt());
             statement.executeUpdate();
 
-        } catch (
-                SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

@@ -1,8 +1,8 @@
-package com.aryzhkov.onlineshop.web.servlet.servlet;
+package com.aryzhkov.onlineshop.web.servlet;
 
 import com.aryzhkov.onlineshop.entity.Product;
 import com.aryzhkov.onlineshop.service.ProductService;
-import com.aryzhkov.onlineshop.web.servlet.templater.PageGenerator;
+import com.aryzhkov.onlineshop.web.templater.PageGenerator;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +15,10 @@ import java.util.Map;
 public class GetProductServlet extends HttpServlet {
 
     private ProductService productService;
+
+    public GetProductServlet(){
+
+    }
 
     public GetProductServlet(ProductService productService) {
         this.productService = productService;

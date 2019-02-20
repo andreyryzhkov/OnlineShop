@@ -1,4 +1,4 @@
-package com.aryzhkov.onlineshop.web.servlet.auth;
+package com.aryzhkov.onlineshop.web.auth;
 
 import com.aryzhkov.onlineshop.entity.Session;
 import com.aryzhkov.onlineshop.entity.UserType;
@@ -6,18 +6,17 @@ import com.aryzhkov.onlineshop.service.SecurityService;
 import org.eclipse.jetty.http.HttpStatus;
 
 import javax.servlet.*;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class UserRoleFilter implements Filter {
+public abstract class AbstractRoleFilter implements Filter {
+
     private SecurityService securityService;
 
-    public UserRoleFilter(SecurityService securityService) {
+    public AbstractRoleFilter(SecurityService securityService) {
         this.securityService = securityService;
     }
-
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -29,20 +28,23 @@ public class UserRoleFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
-        Auth auth = new Auth(securityService);
-        Session session = auth.getSession(httpServletRequest);
+        String sessionToken = AuthUtil.getSessionToken(httpServletRequest);
+        Session session = securityService.getSession(sessionToken);
 
         if (session == null) {
             httpServletResponse.sendRedirect("/login");
         } else {
             UserType userType = session.getUser().getUserType();
-            if (userType == UserType.ADMIN || userType == UserType.USER) {
+            if (isValidRole(userType)) {
                 filterChain.doFilter(servletRequest, servletResponse);
             } else {
-                httpServletResponse.sendError(HttpStatus.UNAUTHORIZED_401, "Cannot access for products");
+                httpServletResponse.sendError(HttpStatus.UNAUTHORIZED_401, "Cannot access for add/edit product");
             }
         }
+
     }
+
+    protected abstract boolean isValidRole(UserType userType);
 
     @Override
     public void destroy() {

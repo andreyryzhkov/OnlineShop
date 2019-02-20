@@ -1,9 +1,10 @@
-package com.aryzhkov.onlineshop.web.servlet.servlet;
+package com.aryzhkov.onlineshop.web.servlet;
 
 import com.aryzhkov.onlineshop.entity.Session;
 import com.aryzhkov.onlineshop.entity.User;
+import com.aryzhkov.onlineshop.entity.UserType;
 import com.aryzhkov.onlineshop.service.SecurityService;
-import com.aryzhkov.onlineshop.web.servlet.templater.PageGenerator;
+import com.aryzhkov.onlineshop.web.templater.PageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -36,7 +37,7 @@ public class RegistrationServlet extends HttpServlet {
         String password = req.getParameter("password");
         String usertype = req.getParameter("userrole");
 
-        User user = securityService.newUser(login, password, usertype);
+        User user = securityService.newUser(login, password, UserType.getByName(usertype));
         Session session = securityService.getSession(user);
 
         if (session != null) {

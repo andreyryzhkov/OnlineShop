@@ -1,4 +1,4 @@
-package com.aryzhkov.onlineshop.web.servlet.servlet;
+package com.aryzhkov.onlineshop.web.servlet;
 
 import com.aryzhkov.onlineshop.entity.Session;
 import com.aryzhkov.onlineshop.service.SecurityService;

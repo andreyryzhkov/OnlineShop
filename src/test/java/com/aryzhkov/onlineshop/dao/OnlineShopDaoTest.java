@@ -53,7 +53,7 @@ public class OnlineShopDaoTest {
 
         String login = "user2";
         String password = "user2";
-        User user = securityService.newUser(login, password, "USER");
+        User user = securityService.newUser(login, password, UserType.USER);
     }
 
     @Test
