@@ -1,3 +1,4 @@
+/**
 package com.aryzhkov.onlineshop;
 
 import com.aryzhkov.onlineshop.dao.jdbc.ProductDao;
@@ -76,3 +77,4 @@ public class Starter {
         server.start();
     }
 }
+*/

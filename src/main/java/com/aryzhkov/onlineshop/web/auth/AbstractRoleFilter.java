@@ -3,7 +3,6 @@ package com.aryzhkov.onlineshop.web.auth;
 import com.aryzhkov.onlineshop.entity.Session;
 import com.aryzhkov.onlineshop.entity.UserType;
 import com.aryzhkov.onlineshop.service.SecurityService;
-import org.eclipse.jetty.http.HttpStatus;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +37,7 @@ public abstract class AbstractRoleFilter implements Filter {
             if (isValidRole(userType)) {
                 filterChain.doFilter(servletRequest, servletResponse);
             } else {
-                httpServletResponse.sendError(HttpStatus.UNAUTHORIZED_401, "Cannot access for add/edit product");
+                httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Cannot access for add/edit product");
             }
         }
 

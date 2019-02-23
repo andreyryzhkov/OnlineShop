@@ -1,8 +1,8 @@
 package com.aryzhkov.onlineshop;
 
-import com.aryzhkov.onlineshop.dao.jdbc.UserDao;
+import com.aryzhkov.onlineshop.dao.jdbc.ProductDao;
 import com.aryzhkov.onlineshop.dao.jdbc.datasource.PGSDataSource;
-import com.aryzhkov.onlineshop.service.UserService;
+import com.aryzhkov.onlineshop.service.ProductService;
 
 import javax.sql.DataSource;
 import java.io.FileInputStream;
@@ -12,14 +12,15 @@ import java.util.Map;
 import java.util.Properties;
 
 public class ServiceLocator {
-    private static final String PROPERTIES_PATH = "db.properties";
+    private static final String PROPERTIES_PATH = "src/main/resources/db.properties"; // ????
 
     private static final Map<Class<?>, Object> SERVICES = new HashMap<>();
 
     static {
+
         Properties properties = new Properties();
 
-        try (FileInputStream fileInputStream = new FileInputStream(PROPERTIES_PATH)) {
+        try (FileInputStream fileInputStream = new FileInputStream(PROPERTIES_PATH)) { //error path
             properties.load(fileInputStream);
         } catch (IOException e) {
             e.printStackTrace();
@@ -29,10 +30,10 @@ public class ServiceLocator {
         pgsDataSource.setProperties(properties);
         DataSource dataSource = pgsDataSource.createDataSource();
 
-        UserDao userDao = new UserDao(dataSource);
-        UserService userService = new UserService(userDao);
+        ProductDao productDao = new ProductDao(dataSource);
+        ProductService productService = new ProductService(productDao);
 
-        SERVICES.put(UserService.class, userService);
+        SERVICES.put(ProductService.class, productService);
     }
 
     public static <T> T getService(Class<T> clazz) {
