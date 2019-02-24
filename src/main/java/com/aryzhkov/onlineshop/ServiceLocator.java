@@ -7,12 +7,13 @@ import com.aryzhkov.onlineshop.service.ProductService;
 import javax.sql.DataSource;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 public class ServiceLocator {
-    private static final String PROPERTIES_PATH = "src/main/resources/db.properties"; // ????
+    private static final String PROPERTIES_PATH = "db.properties";
 
     private static final Map<Class<?>, Object> SERVICES = new HashMap<>();
 
@@ -20,8 +21,8 @@ public class ServiceLocator {
 
         Properties properties = new Properties();
 
-        try (FileInputStream fileInputStream = new FileInputStream(PROPERTIES_PATH)) { //error path
-            properties.load(fileInputStream);
+        try (InputStream inputStream = ServiceLocator.class.getClassLoader().getResourceAsStream(PROPERTIES_PATH)) { //error path
+            properties.load(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }

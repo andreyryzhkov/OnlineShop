@@ -5,13 +5,14 @@
          version="3.1">
 
     <servlet>
-        <servlet-name>productServlet</servlet-name>
-        <servlet-class>com.aryzhkov.onlineshop.web.servlet.GetProductServlet</servlet-class>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>productServlet</servlet-name>
-        <url-pattern>/products</url-pattern>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
 </web-app>
