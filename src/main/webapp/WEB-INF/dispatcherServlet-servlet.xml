@@ -11,5 +11,15 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <context:component-scan base-package="com.aryzhkov.onlineshop.web.controller"/>
+
+    <mvc:annotation-driven/>
+
+    <bean id="productServiceBean" class="com.aryzhkov.onlineshop.service.ProductService">
+        <property name="productDao" ref="productDao"/>
+    </bean>
+
+    <bean id="productDao" class="com.aryzhkov.onlineshop.dao.jdbc.ProductDao">
+    </bean>
 
 </beans>

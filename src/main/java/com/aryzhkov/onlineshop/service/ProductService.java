@@ -2,6 +2,7 @@ package com.aryzhkov.onlineshop.service;
 
 import com.aryzhkov.onlineshop.dao.jdbc.ProductDao;
 import com.aryzhkov.onlineshop.entity.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -38,4 +39,7 @@ public class ProductService implements IProductService {
         jdbcProductDao.updateProduct(product);
     }
 
+    public void setProductDao(ProductDao productDao) {
+        this.jdbcProductDao = productDao;
+    }
 }
