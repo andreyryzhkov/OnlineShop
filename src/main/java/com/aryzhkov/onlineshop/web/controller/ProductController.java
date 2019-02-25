@@ -19,25 +19,19 @@ import java.util.Map;
 public class ProductController {
 
     @Autowired
-    @Qualifier("productServiceBean")
+    @Qualifier("productService")
     private ProductService productService;
 
     @RequestMapping(method = RequestMethod.GET, path = "/products")
     public void getProducts(HttpServletResponse httpServletResponse) throws IOException {
         List<Product> products = productService.getAllProduct();
-        PageGenerator pageGenerator = PageGenerator.instance();
-
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("products", products);
 
-
-        String page = pageGenerator.getPage("allproduct.html", pageVariables);
-        httpServletResponse.getWriter().write(page);
+        httpServletResponse.getWriter().println(PageGenerator.instance().getPage("allproduct.html", pageVariables));
 
         httpServletResponse.setContentType("text/html;charset=utf-8");
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-
-        //   httpServletResponse.getWriter().write("products!!!");
     }
 
     public void setProductService(ProductService productService) {

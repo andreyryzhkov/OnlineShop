@@ -15,11 +15,18 @@
 
     <mvc:annotation-driven/>
 
-    <bean id="productServiceBean" class="com.aryzhkov.onlineshop.service.ProductService">
+    <bean id="productService" class="com.aryzhkov.onlineshop.service.ProductService">
         <property name="productDao" ref="productDao"/>
     </bean>
 
     <bean id="productDao" class="com.aryzhkov.onlineshop.dao.jdbc.ProductDao">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="dataSource" class="org.postgresql.ds.PGSimpleDataSource">
+        <property name="url" value="jdbc:postgresql://localhost:5432/postgres"/>
+        <property name="user" value="postgres"/>
+        <property name="password" value="superuser"/>
     </bean>
 
 </beans>

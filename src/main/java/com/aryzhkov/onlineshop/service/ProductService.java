@@ -2,17 +2,12 @@ package com.aryzhkov.onlineshop.service;
 
 import com.aryzhkov.onlineshop.dao.jdbc.ProductDao;
 import com.aryzhkov.onlineshop.entity.Product;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class ProductService implements IProductService {
 
     private ProductDao jdbcProductDao;
-
-    public ProductService(ProductDao jdbcProductDao) {
-        this.jdbcProductDao = jdbcProductDao;
-    }
 
     @Override
     public List<Product> getAllProduct() {

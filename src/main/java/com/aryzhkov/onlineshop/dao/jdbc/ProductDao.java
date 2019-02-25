@@ -11,11 +11,8 @@ import java.util.List;
 
 public class ProductDao implements IProductDao {
     private static final ProductMapper PRODUCT_ROW_MAPPER = new ProductMapper();
-    private DataSource dataSource;
 
-    public ProductDao(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    private DataSource dataSource;
 
     @Override
     public List<Product> getAllProduct() {
@@ -99,5 +96,9 @@ public class ProductDao implements IProductDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }

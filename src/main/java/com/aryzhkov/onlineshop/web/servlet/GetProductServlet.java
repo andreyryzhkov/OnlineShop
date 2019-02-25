@@ -1,6 +1,6 @@
 package com.aryzhkov.onlineshop.web.servlet;
 
-import com.aryzhkov.onlineshop.ServiceLocator;
+
 import com.aryzhkov.onlineshop.entity.Product;
 import com.aryzhkov.onlineshop.service.ProductService;
 import com.aryzhkov.onlineshop.service.UserService;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class GetProductServlet extends HttpServlet {
 
-    private ProductService productService = ServiceLocator.getService(ProductService.class);
+    private ProductService productService; // = ServiceLocator.getService(ProductService.class);
 
     public GetProductServlet() {
 
