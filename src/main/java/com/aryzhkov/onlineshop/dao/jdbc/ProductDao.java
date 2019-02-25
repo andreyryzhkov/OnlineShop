@@ -3,15 +3,19 @@ package com.aryzhkov.onlineshop.dao.jdbc;
 import com.aryzhkov.onlineshop.dao.IProductDao;
 import com.aryzhkov.onlineshop.dao.jdbc.mapper.ProductMapper;
 import com.aryzhkov.onlineshop.entity.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ProductDao implements IProductDao {
     private static final ProductMapper PRODUCT_ROW_MAPPER = new ProductMapper();
 
+    @Autowired
     private DataSource dataSource;
 
     @Override

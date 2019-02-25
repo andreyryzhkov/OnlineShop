@@ -2,11 +2,15 @@ package com.aryzhkov.onlineshop.service;
 
 import com.aryzhkov.onlineshop.dao.jdbc.ProductDao;
 import com.aryzhkov.onlineshop.entity.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ProductService implements IProductService {
 
+    @Autowired
     private ProductDao jdbcProductDao;
 
     @Override

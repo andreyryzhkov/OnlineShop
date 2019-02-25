@@ -3,6 +3,8 @@ package com.aryzhkov.onlineshop.service;
 import com.aryzhkov.onlineshop.entity.Session;
 import com.aryzhkov.onlineshop.entity.User;
 import com.aryzhkov.onlineshop.entity.UserType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,13 +12,12 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Service
 public class SecurityService {
+
+    @Autowired
     private UserService userService;
     private List<Session> sessions = Collections.synchronizedList(new ArrayList<>());
-
-    public SecurityService(UserService userService) {
-        this.userService = userService;
-    }
 
     public User newUser(String login, String password, UserType usertype) {
         byte[] salt = getSalt();
