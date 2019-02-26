@@ -12,8 +12,12 @@ public class User {
     private UserType userType;
     private byte[] salt;
 
-    public User() {
-
+    public User(int id, String userName, byte[] password, UserType userType, byte[] salt) {
+        this.id = id;
+        this.userName = userName;
+        this.password = password;
+        this.userType = userType;
+        this.salt = salt;
     }
 
     public User(String userName, byte[] password, UserType userType, byte[] salt) {

@@ -2,11 +2,8 @@ package com.aryzhkov.onlineshop.dao.jdbc.mapper;
 
 import com.aryzhkov.onlineshop.entity.Product;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class ProductMapper {
 

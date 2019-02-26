@@ -1,3 +1,4 @@
+/**
 package com.aryzhkov.onlineshop.dao.jdbc.mapper;
 
 import com.aryzhkov.onlineshop.entity.User;
@@ -19,3 +20,4 @@ public class UserMapper {
         return user;
     }
 }
+*/

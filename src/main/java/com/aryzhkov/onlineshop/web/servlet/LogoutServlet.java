@@ -1,3 +1,4 @@
+/**
 package com.aryzhkov.onlineshop.web.servlet;
 
 import com.aryzhkov.onlineshop.entity.Session;
@@ -31,3 +32,4 @@ public class LogoutServlet extends HttpServlet {
         resp.sendRedirect("/products");
     }
 }
+ */
