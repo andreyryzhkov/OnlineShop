@@ -1,3 +1,4 @@
+/**
 package com.aryzhkov.onlineshop.dao.jdbc.datasource;
 
 import org.postgresql.ds.PGSimpleDataSource;
@@ -20,3 +21,4 @@ public class PGSDataSource {
         return dataSource;
     }
 }
+ */

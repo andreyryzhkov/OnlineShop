@@ -3,6 +3,8 @@ package com.aryzhkov.onlineshop.web.auth;
 import com.aryzhkov.onlineshop.entity.Session;
 import com.aryzhkov.onlineshop.entity.UserType;
 import com.aryzhkov.onlineshop.service.SecurityService;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -13,13 +15,21 @@ public abstract class AbstractRoleFilter implements Filter {
 
     private SecurityService securityService;
 
+    public AbstractRoleFilter() {
+
+    }
+
     public AbstractRoleFilter(SecurityService securityService) {
         this.securityService = securityService;
     }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        if (securityService == null) {
+            ServletContext servletContext = filterConfig.getServletContext();
+            WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+            securityService = webApplicationContext.getBean(SecurityService.class);
+        }
     }
 
     @Override
@@ -40,7 +50,6 @@ public abstract class AbstractRoleFilter implements Filter {
                 httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Cannot access for add/edit product");
             }
         }
-
     }
 
     protected abstract boolean isValidRole(UserType userType);

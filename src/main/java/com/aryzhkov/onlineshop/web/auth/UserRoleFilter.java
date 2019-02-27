@@ -5,6 +5,9 @@ import com.aryzhkov.onlineshop.service.SecurityService;
 
 public class UserRoleFilter extends AbstractRoleFilter {
 
+    public UserRoleFilter() {
+    }
+
     public UserRoleFilter(SecurityService securityService) {
         super(securityService);
     }

@@ -1,3 +1,4 @@
+/**
 package com.aryzhkov.onlineshop.dao.jdbc.mapper;
 
 import com.aryzhkov.onlineshop.entity.Product;
@@ -17,3 +18,4 @@ public class ProductMapper {
         return product;
     }
 }
+*/

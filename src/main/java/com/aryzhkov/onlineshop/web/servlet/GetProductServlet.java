@@ -1,3 +1,4 @@
+/**
 package com.aryzhkov.onlineshop.web.servlet;
 
 
@@ -55,3 +56,4 @@ public class GetProductServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
     }
 }
+ */

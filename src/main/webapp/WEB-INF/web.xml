@@ -4,15 +4,42 @@
 		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/app-context.xml</param-value>
+    </context-param>
+
+    <!--Servlets-->
     <servlet>
         <servlet-name>dispatcherServlet</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>dispatcherServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+    <!--Filters-->
+    <filter>
+        <filter-name>adminRoleFilter</filter-name>
+        <filter-class>com.aryzhkov.onlineshop.web.auth.AdminRoleFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>adminRoleFilter</filter-name>
+        <url-pattern>/product/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>userRoleFilter</filter-name>
+        <filter-class>com.aryzhkov.onlineshop.web.auth.UserRoleFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>userRoleFilter</filter-name>
+        <url-pattern>/products</url-pattern>
+    </filter-mapping>
 
 </web-app>
