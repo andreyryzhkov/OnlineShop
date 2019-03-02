@@ -20,19 +20,20 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
+    private final SecurityService securityService;
+
     @Autowired
-    private SecurityService securityService;
+    public LoginController(SecurityService securityService) {
+        this.securityService = securityService;
+    }
 
     @GetMapping(path = "/login")
-    public void loginPage(HttpServletResponse httpServletResponse) throws IOException {
-        Map<String, Object> pageVariables = new HashMap<>();
-        httpServletResponse.getWriter().println(PageGenerator.instance().getPage("login.html", pageVariables));
-        httpServletResponse.setContentType("text/html;charset=utf-8");
-        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+    public String loginPage(HttpServletResponse httpServletResponse) throws IOException {
+        return "login";
     }
 
     @PostMapping(path = "/login")
-    public void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String login(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
@@ -42,15 +43,14 @@ public class LoginController {
         if (session != null) {
             Cookie cookie = new Cookie("token", session.getToken());
             response.addCookie(cookie);
-            response.sendRedirect("/products");
+            return "redirect:/products";
         } else {
-            response.setContentType("text/html;charset=utf-8");
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            return "login";
         }
     }
 
     @GetMapping(path = "/logout")
-    public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
+    public String logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
         Cookie[] cookies = httpServletRequest.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -60,34 +60,29 @@ public class LoginController {
                 }
             }
         }
-        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-        httpServletResponse.sendRedirect("/products");
+        return "redirect:/login";
     }
 
     @GetMapping(path = "/registration")
-    public void registrationPage(HttpServletResponse httpServletResponse) throws IOException {
-        Map<String, Object> pageVariables = new HashMap<>();
-        httpServletResponse.getWriter().println(PageGenerator.instance().getPage("registration.html", pageVariables));
-        httpServletResponse.setContentType("text/html;charset=utf-8");
-        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+    public String registrationPage(HttpServletResponse httpServletResponse) throws IOException {
+        return "registration";
     }
 
     @PostMapping(path = "/registration")
-    public void registration(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
+    public String registration(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
         String login = httpServletRequest.getParameter("login");
         String password = httpServletRequest.getParameter("password");
         String usertype = httpServletRequest.getParameter("userrole");
 
         User user = securityService.newUser(login, password, UserType.getByName(usertype));
         Session session = securityService.getSession(user);
-
+// TODO: add isUserCreated
         if (session != null) {
             Cookie cookie = new Cookie("token", session.getToken());
             httpServletResponse.addCookie(cookie);
-            httpServletResponse.sendRedirect("/products");
+            return "addproduct";
         } else {
-            httpServletResponse.setContentType("text/html;charset=utf-8");
-            httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            return "login";
         }
     }
 }

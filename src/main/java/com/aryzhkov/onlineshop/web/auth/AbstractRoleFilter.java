@@ -25,11 +25,9 @@ public abstract class AbstractRoleFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        if (securityService == null) {
-            ServletContext servletContext = filterConfig.getServletContext();
-            WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
-            securityService = webApplicationContext.getBean(SecurityService.class);
-        }
+        ServletContext servletContext = filterConfig.getServletContext();
+        WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+        securityService = webApplicationContext.getBean(SecurityService.class);
     }
 
     @Override

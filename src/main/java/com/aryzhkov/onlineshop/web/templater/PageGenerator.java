@@ -4,14 +4,13 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
 public class PageGenerator {
-    private static final String HTML_DIR = "templates";
+    private static final String HTML_DIR = "WEB-INF/templates";
 
     private static PageGenerator pageGenerator;
     private final Configuration cfg;
@@ -35,6 +34,6 @@ public class PageGenerator {
 
     private PageGenerator() {
         cfg = new Configuration();
-        cfg.setClassForTemplateLoading(this.getClass(), "/templates/");
+        cfg.setClassForTemplateLoading(this.getClass(), "/WEB-INF/templates/");
     }
 }

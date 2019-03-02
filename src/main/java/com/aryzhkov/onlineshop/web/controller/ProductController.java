@@ -1,13 +1,11 @@
 package com.aryzhkov.onlineshop.web.controller;
 
 import com.aryzhkov.onlineshop.entity.Product;
-import com.aryzhkov.onlineshop.entity.Session;
-import com.aryzhkov.onlineshop.entity.User;
 import com.aryzhkov.onlineshop.service.ProductService;
-import com.aryzhkov.onlineshop.service.SecurityService;
 import com.aryzhkov.onlineshop.web.templater.PageGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,14 +27,8 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/products")
-    public void getProducts(HttpServletResponse httpServletResponse) throws IOException {
-        List<Product> products = productService.getAllProduct();
-        Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("products", products);
-
-        httpServletResponse.getWriter().println(PageGenerator.instance().getPage("allproduct.html", pageVariables));
-
-        httpServletResponse.setContentType("text/html;charset=utf-8");
-        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+    public String getProducts(HttpServletResponse httpServletResponse, ModelMap modelMap) throws IOException {
+        modelMap.addAttribute("products", productService.getAllProduct());
+        return "allproduct";
     }
 }
