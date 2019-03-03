@@ -54,4 +54,22 @@ public class ProductController {
         productService.deleteProduct(id);
         return "redirect:/products";
     }
+
+    @GetMapping(path = "/product/edit")
+    public String editProductPage(@RequestParam int id, ModelMap modelMap) {
+        modelMap.addAttribute("product", productService.getProductById(id));
+        return "editproduct";
+    }
+
+    @PostMapping(path = "/product/edit")
+    public String editProduct(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        int id = Integer.parseInt(httpServletRequest.getParameter("id"));
+        String productName = httpServletRequest.getParameter("productname");
+        double price = Double.parseDouble(httpServletRequest.getParameter("price"));
+        LocalDate dateMaking = LocalDate.parse(httpServletRequest.getParameter("datemaking"));
+
+        Product product = new Product(id, productName, price, dateMaking);
+        productService.updateProduct(product);
+        return "redirect:/products";
+    }
 }
