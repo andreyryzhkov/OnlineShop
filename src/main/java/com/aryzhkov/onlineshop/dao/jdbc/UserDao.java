@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserDao implements IUserDao {
     private static final String GET_USER_BY_NAME_SQL = "SELECT \"USERNAME\" as username, \"PASSWORD\" as password," +
-            "\"USERTYPE\" as usertype, \"ID\" as id, \"SALT\" as salt FROM public.\"USERS\"  WHERE \"USERNAME\" = ?";
+            "\"USERTYPE\" as usertype, \"ID\" as id, \"SALT\" as salt FROM onlineshop.USERS  WHERE \"USERNAME\" = ?";
 
-    private static final String INSERT_SQL = "insert into public.\"USERS\" (\"USERNAME\", \"PASSWORD\", \"USERTYPE\", \"SALT\") VALUES (?,?,?,?)";
+    private static final String INSERT_SQL = "insert into onlineshop.USERS (\"USERNAME\", \"PASSWORD\", \"USERTYPE\", \"SALT\") VALUES (?,?,?,?)";
 
 //    private static final UserMapper USER_MAPPER = new UserMapper();
 

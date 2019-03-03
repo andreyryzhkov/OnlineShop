@@ -6,12 +6,12 @@ import com.aryzhkov.onlineshop.web.templater.PageGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,5 +30,28 @@ public class ProductController {
     public String getProducts(HttpServletResponse httpServletResponse, ModelMap modelMap) throws IOException {
         modelMap.addAttribute("products", productService.getAllProduct());
         return "allproduct";
+    }
+
+    @GetMapping(path = "/product/add")
+    public String addProductPage(HttpServletResponse httpServletResponse) {
+        return "addproduct";
+    }
+
+    @PostMapping(path = "/product/add")
+    public String addProduct(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        String name = httpServletRequest.getParameter("productname");
+        double price = Double.parseDouble(httpServletRequest.getParameter("price"));
+        LocalDate dateMaking = LocalDate.parse(httpServletRequest.getParameter("datemaking"));
+
+        Product product = new Product(name, price, dateMaking);
+        productService.insertProduct(product);
+
+        return "redirect:/products";
+    }
+
+    @PostMapping(path = "/product/delete")
+    public String deleteProduct(@RequestParam int id) {
+        productService.deleteProduct(id);
+        return "redirect:/products";
     }
 }

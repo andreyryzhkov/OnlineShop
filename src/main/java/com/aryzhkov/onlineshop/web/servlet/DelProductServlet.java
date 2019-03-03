@@ -1,3 +1,4 @@
+/**
 package com.aryzhkov.onlineshop.web.servlet;
 
 import com.aryzhkov.onlineshop.service.ProductService;
@@ -29,3 +30,4 @@ public class DelProductServlet extends HttpServlet {
         resp.sendRedirect("/products");
     }
 }
+ */
