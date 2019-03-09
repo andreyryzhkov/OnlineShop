@@ -11,13 +11,15 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class SecurityService {
 
     @Autowired
     private UserService userService;
-    private List<Session> sessions = Collections.synchronizedList(new ArrayList<>());
+    private List<Session> sessions = Collections.synchronizedList(new ArrayList<>()); // CopyOnWriteArrayList
+
 
     public User newUser(String login, String password, UserType usertype) {
         byte[] salt = getSalt();
